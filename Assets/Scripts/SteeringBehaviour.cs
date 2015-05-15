@@ -338,28 +338,34 @@ namespace Assets.Scripts
             return SteeringForce.normalized * _vehicle.MaxSpeed / 3;
         }
 
-        public Vector2 Pursuit(GameObject evader)
+        public Vector2 Stop(Vector2 velocity, float timeToStop)
         {
-          //if the evader is ahead and facing the agent then we can just seek
-          //for the evader's current position.
-            Vector2 ToEvader = evader.transform.position - _instance.transform.position;
+            return velocity * -1 / timeToStop;
+        }
 
-            double RelativeHeading = Vector2.Dot(_rigidbody2D.velocity.normalized, evader.GetComponent<Rigidbody2D>().velocity.normalized);
+        public Vector2 Pursuit(Vector2 evaderPos, Vector2 evaderVelocity)
+        {
+            //if the evader is ahead and facing the agent then we can just seek
+            //for the evader's current position.
+            Vector2 ToEvader = evaderPos - (Vector2)_instance.transform.position;
 
-          if ( (Vector2.Dot(evader.GetComponent<Rigidbody2D>().velocity.normalized, _rigidbody2D.velocity.normalized)> 0) && (RelativeHeading < -0.95))
-          {
-            return Seek(evader.transform.position);
-          }
+            double RelativeHeading = Vector2.Dot(_rigidbody2D.velocity.normalized, evaderVelocity.normalized);
 
-          //Not considered ahead so we predict where the evader will be.
- 
-          //the lookahead time is propotional to the distance between the evader
-          //and the pursuer; and is inversely proportional to the sum of the
-          //agent's velocities
-          float LookAheadTime = evader.GetComponent<Rigidbody2D>().velocity.magnitude / (_vehicle.MaxSpeed + evader.GetComponent<Rigidbody2D>().velocity.magnitude);
-  
-          //now seek to the predicted future position of the evader
-          return Seek((Vector2)evader.transform.position + evader.GetComponent<Rigidbody2D>().velocity * LookAheadTime);
+            if ((Vector2.Dot(evaderVelocity.normalized, _rigidbody2D.velocity.normalized) > 0) && (RelativeHeading < -0.95))
+            {
+                return Seek(evaderPos);
+            }
+
+            //Not considered ahead so we predict where the evader will be.
+
+            //the lookahead time is propotional to the distance between the evader
+            //and the pursuer; and is inversely proportional to the sum of the
+            //agent's velocities
+            float LookAheadTime = evaderVelocity.magnitude / (_vehicle.MaxSpeed + evaderVelocity.magnitude);
+
+            //now seek to the predicted future position of the evader
+            return Seek(evaderPos + evaderVelocity * LookAheadTime);
+        }
         }
     }
 }
