@@ -32,7 +32,7 @@ namespace Assets.Scripts.Goals.Tank
 
         public override STATUS Process()
         {
-            _rigidbody.AddForce(_steeringBehaviour.Arrive(_flag.transform.position, SteeringBehaviour.Deceleration.fast));
+            _rigidbody.AddForce(_steeringBehaviour.Stop(_rigidbody.velocity, 3f));
 
             if (_flag.GetComponent<Flag>().Side == Instance.GetComponent<Vehicle>().Side)
             {
