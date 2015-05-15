@@ -24,7 +24,7 @@ namespace Assets.Scripts.Pathfinding
 
         int i = 0;
 
-        private int _iterationsPerCall = 25;
+        private int _iterationsPerCall = 10;
 
         Stopwatch sw = new Stopwatch();
         public AStar(Graph graph, int source, int target)
