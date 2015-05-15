@@ -72,13 +72,6 @@ namespace Assets.Scripts
             return Vector2.zero;
         }
 
-        public Vector2 Pursuit(GameObject evader)
-        {
-            Vector2 toEvader = evader.transform.position - _instance.transform.position;
-
-            throw new NotImplementedException();
-        }
-
         public Vector2 Wander()
         {
             const float wanderRadius = 2;
@@ -345,5 +338,28 @@ namespace Assets.Scripts
             return SteeringForce.normalized * _vehicle.MaxSpeed / 3;
         }
 
+        public Vector2 Pursuit(GameObject evader)
+        {
+          //if the evader is ahead and facing the agent then we can just seek
+          //for the evader's current position.
+            Vector2 ToEvader = evader.transform.position - _instance.transform.position;
+
+            double RelativeHeading = Vector2.Dot(_rigidbody2D.velocity.normalized, evader.GetComponent<Rigidbody2D>().velocity.normalized);
+
+          if ( (Vector2.Dot(evader.GetComponent<Rigidbody2D>().velocity.normalized, _rigidbody2D.velocity.normalized)> 0) && (RelativeHeading < -0.95))
+          {
+            return Seek(evader.transform.position);
+          }
+
+          //Not considered ahead so we predict where the evader will be.
+ 
+          //the lookahead time is propotional to the distance between the evader
+          //and the pursuer; and is inversely proportional to the sum of the
+          //agent's velocities
+          float LookAheadTime = evader.GetComponent<Rigidbody2D>().velocity.magnitude / (_vehicle.MaxSpeed + evader.GetComponent<Rigidbody2D>().velocity.magnitude);
+  
+          //now seek to the predicted future position of the evader
+          return Seek((Vector2)evader.transform.position + evader.GetComponent<Rigidbody2D>().velocity * LookAheadTime);
+        }
     }
 }
