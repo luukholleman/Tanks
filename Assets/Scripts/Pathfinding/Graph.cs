@@ -8,12 +8,12 @@ namespace Assets.Scripts.Pathfinding
     {
         public static Graph Instance;
 
+        public float NodeDistance = 1f;
+
         void Start()
         {
             Instance = this;
-
-            float NodeDistance = 1.5f;
-
+            
             for (float x = Settings.Instance.Width * -1; x <= Settings.Instance.Width; x += NodeDistance)
             {
                 for (float y = Settings.Instance.Height * -1; y <= Settings.Instance.Height; y += NodeDistance)
@@ -36,16 +36,16 @@ namespace Assets.Scripts.Pathfinding
                         neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(0, -NodeDistance)));
 
                         // diagonaal
-                        //neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(NodeDistance, NodeDistance)));
-                        //neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeDistance, NodeDistance)));
-                        //neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(NodeDistance, -NodeDistance)));
-                        //neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeDistance, -NodeDistance)));
+                        neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(NodeDistance, NodeDistance)));
+                        neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeDistance, NodeDistance)));
+                        neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(NodeDistance, -NodeDistance)));
+                        neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeDistance, -NodeDistance)));
 
                         foreach (GraphNode neighbour in neighbours.Where(n => n != null))
                         {
                             if (!neighbour.HasEdgeTo(node))
                             {
-                                neighbour.Edges.Add(new GraphEdge(node.Index, 1));
+                                neighbour.Edges.Add(new GraphEdge(node.Index, Vector2.Distance(node.Position, neighbour.Position)));
                             }
 
                             node.Edges.Add(new GraphEdge(neighbour.Index, NodeDistance));
