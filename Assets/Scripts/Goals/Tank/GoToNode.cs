@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Pathfinding;
+﻿using System.Collections.Generic;
+using Assets.Scripts.Pathfinding;
 using UnityEngine;
 
 namespace Assets.Scripts.Goals.Tank
@@ -34,6 +35,26 @@ namespace Assets.Scripts.Goals.Tank
             {
                 return SetStatus(STATUS.COMPLETED);
             }
+
+            Vector2 steeringForce = Vector2.zero;
+            
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(Instance.transform.position, 1, LayerMask.GetMask("Tank"));
+
+            List<GameObject> neighbours = new List<GameObject>();
+
+            foreach (Collider2D collider2D in colliders)
+            {
+                if (collider2D.gameObject != Instance.gameObject)
+                    neighbours.Add(collider2D.gameObject);
+            }
+
+            steeringForce += _steeringBehaviour.Alignment(neighbours) * Instance.transform.GetComponent<Vehicle>().MaxSpeed;
+            steeringForce += _steeringBehaviour.Cohesion(neighbours) * Instance.transform.GetComponent<Vehicle>().MaxSpeed;
+            steeringForce += _steeringBehaviour.Separation(neighbours) * Instance.transform.GetComponent<Vehicle>().MaxSpeed;
+
+            steeringForce = steeringForce.normalized * Instance.transform.GetComponent<Vehicle>().MaxSpeed;
+
+            Instance.GetComponent<Rigidbody2D>().AddForce(steeringForce);
 
             _rigidbody.AddForce(_steeringBehaviour.Seek(_node.Position) * Instance.GetComponent<Vehicle>().MaxSpeed);
 
