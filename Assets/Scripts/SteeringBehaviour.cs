@@ -366,6 +366,45 @@ namespace Assets.Scripts
             //now seek to the predicted future position of the evader
             return Seek(evaderPos + evaderVelocity * LookAheadTime);
         }
+
+        public Vector2 Orbit(GameObject center, float radius)
+        {
+            //_instance.transform.RotateAround(center.transform.position, 20);
+            Vector2 force = Vector2.zero;
+
+            Vector2 local = _instance.transform.InverseTransformPoint(center.transform.position);
+
+            Vector2 localVelocity = _instance.transform.InverseTransformVector(_rigidbody2D.velocity);
+
+            force.x = localVelocity.y * local.normalized.x;
+
+            force = _instance.transform.TransformVector(force);
+
+            force = force.normalized * _vehicle.MaxSpeed * 5;
+
+            return force;
+
+
+            ////if the evader is ahead and facing the agent then we can just seek
+            ////for the evader's current position.
+            //Vector2 ToEvader = evader.transform.position - _instance.transform.position;
+
+            //double RelativeHeading = Vector2.Dot(_rigidbody2D.velocity.normalized, evader.GetComponent<Rigidbody2D>().velocity.normalized);
+
+            //if ((Vector2.Dot(evader.GetComponent<Rigidbody2D>().velocity.normalized, _rigidbody2D.velocity.normalized) > 0) && (RelativeHeading < -0.95))
+            //{
+            //    return Seek(evader.transform.position);
+            //}
+
+            ////Not considered ahead so we predict where the evader will be.
+
+            ////the lookahead time is propotional to the distance between the evader
+            ////and the pursuer; and is inversely proportional to the sum of the
+            ////agent's velocities
+            //float LookAheadTime = evader.GetComponent<Rigidbody2D>().velocity.magnitude / (_vehicle.MaxSpeed + evader.GetComponent<Rigidbody2D>().velocity.magnitude);
+
+            ////now seek to the predicted future position of the evader
+            //return Seek((Vector2)evader.transform.position + evader.GetComponent<Rigidbody2D>().velocity * LookAheadTime);
         }
     }
 }
