@@ -26,6 +26,8 @@ namespace Assets.Scripts.StateMachines.PowerUp
             else
                 powerUp = GameObject.Instantiate(Resources.Load<GameObject>("PreFabs/PowerUps/ExtraTank"), _position, new Quaternion()) as GameObject;
 
+            powerUp.transform.parent = GameObject.Find("PowerUps").transform;
+
             // notify surrounding vehicles
             Collider2D[] colliders = Physics2D.OverlapCircleAll(_position, 20, LayerMask.GetMask("Tank", "Robot"));
 
