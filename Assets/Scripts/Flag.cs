@@ -10,6 +10,8 @@ public class Flag : MonoBehaviour
 
     public Player.Side Side = Player.Side.None;
 
+    public float CappingRange = 2;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -36,15 +38,16 @@ public class Flag : MonoBehaviour
 
     void UpdateSide()
     {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 2f, LayerMask.GetMask("Tank"));
-
-        foreach (Collider2D collider in colliders)
+        foreach (Transform tank in GameObject.Find("Tanks").transform)
         {
-            if (collider.GetComponent<Vehicle>().Side == Player.Side.Blue)
+            if(Vector2.Distance(tank.position, transform.position) > CappingRange)
+                continue;
+
+            if (tank.GetComponent<Vehicle>().Side == Player.Side.Blue)
             {
                 Score += 1 * Time.fixedDeltaTime;
             }
-            else if (collider.GetComponent<Vehicle>().Side == Player.Side.Red)
+            else if (tank.GetComponent<Vehicle>().Side == Player.Side.Red)
             {
                 Score -= 1 * Time.fixedDeltaTime;
             }
