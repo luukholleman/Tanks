@@ -68,9 +68,9 @@ namespace Assets.Scripts.Pathfinding
                     }
 
                     sw.Stop();
-                    Debug.Log("Path found!!");
-                    Debug.Log("Iterations: " + i);
-                    Debug.Log(sw.Elapsed);
+                    //Debug.Log("Path found!!");
+                    //Debug.Log("Iterations: " + i);
+                    //Debug.Log(sw.Elapsed);
 
                     Path.Reverse();
 
