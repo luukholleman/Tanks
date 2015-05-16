@@ -18,6 +18,8 @@ namespace Assets.Scripts
             {
                 GameObject newTank = Instantiate(tank, transform.position + new Vector3(0, -TankCount / 2 + i), new Quaternion()) as GameObject;
 
+                newTank.transform.parent = GameObject.Find("Tanks").transform;
+
                 ////AStar dijkstra = new AStar(Graph.Instance, Graph.Instance.GetNode((Vector2)newTank.transform.position).Index, (int)(Random.value * 2000));
                 //AStar dijkstra = new AStar(Graph.Instance, Graph.Instance.GetNode(newTank.transform.position).Index, (int)(Random.value * Graph.Instance.NodeCount));
 

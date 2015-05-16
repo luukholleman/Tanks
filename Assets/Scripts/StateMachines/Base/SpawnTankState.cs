@@ -19,7 +19,7 @@ namespace Assets.Scripts.StateMachines.Base
 
             GameObject newTank = GameObject.Instantiate(tank, instance.transform.position, new Quaternion()) as GameObject;
 
-            Debug.Log("Spawn new tank");
+            newTank.transform.parent = GameObject.Find("Tanks").transform;
             newTank.GetComponent<Vehicle>().Side = instance.GetComponent<Spawn>().Side;
 
             //newTank.GetComponent<StateMachine>().CurrentState = new PatrolState();
