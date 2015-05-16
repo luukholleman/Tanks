@@ -97,5 +97,13 @@ public class Scoring : MonoBehaviour {
 
         if (redScore > WinningScore)
             GUI.Label(new Rect(Screen.width / 2 - 75, Screen.height / 2, 150, 50), "Red Won!!!", redWinStyle);
+
+        if (blueScore > WinningScore || redScore > WinningScore)
+        {
+            if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 + 60, 200, 30), "Restart Level"))
+            {
+                Application.LoadLevel(Application.loadedLevelName);
+            }
+        }
 	}
 }
