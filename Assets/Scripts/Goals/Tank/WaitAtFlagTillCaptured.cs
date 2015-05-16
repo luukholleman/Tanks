@@ -39,6 +39,15 @@ namespace Assets.Scripts.Goals.Tank
                 return SetStatus(STATUS.COMPLETED);
             }
 
+            if (Vector2.Distance(Instance.transform.position, _flag.transform.position) > _flag.GetComponent<Flag>().CappingRange)
+            {
+                // somehow we got out of the range of the flag (probably shot out), we need to get back in range
+                if ((SubGoals.Any() && SubGoals.Peek().GetType() != typeof(CaptureFlag)) || !SubGoals.Any())
+                    AddSubGoal(new CaptureFlag(_flag));
+
+                return ProcessSubGoals();
+            }
+
             return SetStatus(STATUS.ACTIVE);
         }
 
