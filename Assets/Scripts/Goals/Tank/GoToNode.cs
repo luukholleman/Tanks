@@ -38,7 +38,7 @@ namespace Assets.Scripts.Goals.Tank
 
             Vector2 steeringForce = Vector2.zero;
             
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(Instance.transform.position, 1, LayerMask.GetMask("Tank"));
+            Collider2D[] colliders = Physics2D.OverlapCircleAll(Instance.transform.position, 2f, LayerMask.GetMask("Tank"));
 
             List<GameObject> neighbours = new List<GameObject>();
 
