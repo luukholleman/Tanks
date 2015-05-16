@@ -2,65 +2,81 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Assets.Scripts.Goals.Evaluator;
 using UnityEngine;
 
 namespace Assets.Scripts.Goals.Tank
 {
     class Think : Goal
     {
+        public List<GoalEvaluator> Evaluators = new List<GoalEvaluator>();
+
+        public Think()
+        {
+            Evaluators.Add(new Evaluator.Tank.CaptureFlag());
+            Evaluators.Add(new Evaluator.Tank.GetPowerUp());
+        }
+
+        public override void SetGameObject(GameObject gameObject)
+        {
+            Instance = gameObject;
+
+            foreach (GoalEvaluator evaluator in Evaluators)
+            {
+                evaluator.SetGameObject(gameObject);
+            }
+        }
+
         public override void Activate()
         {
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(Instance.transform.position, 2000f, LayerMask.GetMask("Flag"));
-
-            GameObject closest = null;
-            float dist = float.MaxValue;
-
-            foreach (Collider2D collider in colliders)
-            {
-                float newDist = Vector2.Distance(Instance.transform.position, collider.transform.position);
-                if (newDist < dist && collider.GetComponent<Flag>().Side != Instance.GetComponent<Vehicle>().Side)
-                {
-                    dist = newDist;
-                    closest = collider.gameObject;
-                }
-            }
-
-            if (closest != null)
-            {
-                AddSubGoal(new CaptureFlag(closest));
-                return;
-            }
+            
         }
         
         public override STATUS Process()
         {
-            if (!SubGoals.Any())
+            GoalEvaluator bestEvaluator = null;
+            float bestScore = float.MinValue;
+
+            foreach (GoalEvaluator evaluator in Evaluators)
             {
-                Activate();
-            }
+                float score = evaluator.CalculateDesirability();
 
-            if (SubGoals.Peek().GetType() != typeof(GetPowerUp))
-            {
-                Collider2D[] colliders = Physics2D.OverlapCircleAll(Instance.transform.position, 10f, LayerMask.GetMask("PowerUp"));
-
-                GameObject closest = null;
-                float dist = float.MaxValue;
-
-                foreach (Collider2D collider in colliders)
+                if (score > bestScore)
                 {
-                    float newDist = Vector2.Distance(Instance.transform.position, collider.transform.position);
-                    if (newDist < dist)
-                    {
-                        dist = newDist;
-                        closest = collider.gameObject;
-                    }
-                }
-
-                if (closest != null)
-                {
-                    AddSubGoal(new GetPowerUp(closest));
+                    bestScore = score;
+                    bestEvaluator = evaluator;
                 }
             }
+
+            Goal newGoal = bestEvaluator.GetGoal();
+
+            if ((SubGoals.Any() && SubGoals.Peek().GetType() != newGoal.GetType()) || !SubGoals.Any())
+            {
+                AddSubGoal(newGoal);
+            }
+
+            //if (SubGoals.Any() && SubGoals.Peek().GetType() != typeof(GetPowerUp))
+            //{
+            //    Collider2D[] powerUps = Physics2D.OverlapCircleAll(Instance.transform.position, 10f, LayerMask.GetMask("PowerUp"));
+
+            //    GameObject closestPowerup = null;
+            //    float dist = float.MaxValue;
+
+            //    foreach (Collider2D collider in powerUps)
+            //    {
+            //        float newDist = Vector2.Distance(Instance.transform.position, collider.transform.position);
+            //        if (newDist < dist)
+            //        {
+            //            dist = newDist;
+            //            closestPowerup = collider.gameObject;
+            //        }
+            //    }
+
+            //    if (closestPowerup != null)
+            //    {
+            //        AddSubGoal(new GetPowerUp(closestPowerup));
+            //    }
+            //}
 
             return ProcessSubGoals();
         }
