@@ -9,17 +9,17 @@ namespace Assets.Scripts.Goals
 {
     class GoalComponent : MonoBehaviour
     {
-        public Goal think = new Think();
+        public Goal Think = new Think();
 
         void Start()
         {
-            think.SetGameObject(gameObject);
-            think.Activate();
+            Think.SetGameObject(gameObject);
+            Think.Activate();
         }
 
         void Update()
         {
-            think.Process();
+            Think.Process();
         }
     }
 }
