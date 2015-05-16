@@ -22,7 +22,7 @@ namespace Assets.Scripts.Goals.Tank
 
         public override void Activate()
         {
-            Debug.Log("Following path from " + Instance.transform.position.x + ", " + Instance.transform.position.y + " to " + _target.x + ", " + _target.y);
+            //Debug.Log("Following path from " + Instance.transform.position.x + ", " + Instance.transform.position.y + " to " + _target.x + ", " + _target.y);
 
             _aStar = new AStar(Graph.Instance, Graph.Instance.GetNode(Instance.transform.position).Index, Graph.Instance.GetNode(_target).Index);
         }
@@ -57,7 +57,7 @@ namespace Assets.Scripts.Goals.Tank
 
         public override void Terminate()
         {
-            Debug.Log("Followed path to " + _target.x + ", " + _target.y);
+            //Debug.Log("Followed path to " + _target.x + ", " + _target.y);
         }
 
         public override bool HandleMessage()
