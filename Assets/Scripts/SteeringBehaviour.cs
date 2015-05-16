@@ -25,7 +25,7 @@ namespace Assets.Scripts
 
         private Vector2 wanderTarget = new Vector2(0, 0);
 
-        public void Setup(GameObject instance)
+        public void SetGameObject(GameObject instance)
         {
             _instance = instance;
 

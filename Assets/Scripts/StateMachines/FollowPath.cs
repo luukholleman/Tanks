@@ -44,7 +44,7 @@ namespace Assets.Scripts.StateMachines
 
             _steeringBehaviour = SteeringBehaviour.CreateInstance<SteeringBehaviour>();
 
-            _steeringBehaviour.Setup(instance);
+            _steeringBehaviour.SetGameObject(instance);
         }
 
         private void NextTarget()
