@@ -24,22 +24,10 @@ public class Barrel : MonoBehaviour {
             if(collider.gameObject.GetComponent<Vehicle>().Side == GetComponentInParent<Vehicle>().Side)
                 continue;
 
-            if (Vector2.Distance(transform.position, collider.gameObject.transform.position) < dist)
+            if (Vector2.Distance(transform.position, collider.gameObject.transform.position) < dist && collider.GetComponent<Vehicle>().Side != GetComponentInParent<Vehicle>().Side)
             {
-                //Vector2 heading = collider.transform.position - transform.position;
-                
-                //RaycastHit2D hit = Physics2D.Raycast((Vector2)transform.position + heading.normalized, heading.normalized * 20, float.MaxValue, LayerMask.GetMask("Obstacle", "Tank"));
-
-                ////Debug.DrawRay((Vector2)transform.position + heading.normalized, heading.normalized * 20, Color.red);
-
-                //if (hit.collider != null && hit.collider.gameObject != collider.gameObject && hit.collider.gameObject != transform.parent.gameObject && hit.collider.gameObject.CompareTag("Tank"))
-                //{
-                    if (collider.GetComponent<Vehicle>().Side != GetComponentInParent<Vehicle>().Side)
-                    {
-                        closestGameObject = collider.gameObject;
-                        dist = Vector2.Distance(collider.gameObject.transform.position, transform.position);
-                    }
-                //}
+                closestGameObject = collider.gameObject;
+                dist = Vector2.Distance(collider.gameObject.transform.position, transform.position);
             }
         }
         if (closestGameObject != null)
