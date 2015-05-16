@@ -25,7 +25,7 @@ namespace Assets.Scripts.Goals.Tank
 
             _steeringBehaviour = SteeringBehaviour.CreateInstance<SteeringBehaviour>();
 
-            _steeringBehaviour.Setup(Instance);
+            _steeringBehaviour.SetGameObject(Instance);
 
             _rigidbody = Instance.GetComponent<Rigidbody2D>();
         }
