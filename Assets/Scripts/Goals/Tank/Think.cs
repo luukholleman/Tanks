@@ -55,29 +55,6 @@ namespace Assets.Scripts.Goals.Tank
                 AddSubGoal(newGoal);
             }
 
-            //if (SubGoals.Any() && SubGoals.Peek().GetType() != typeof(GetPowerUp))
-            //{
-            //    Collider2D[] powerUps = Physics2D.OverlapCircleAll(Instance.transform.position, 10f, LayerMask.GetMask("PowerUp"));
-
-            //    GameObject closestPowerup = null;
-            //    float dist = float.MaxValue;
-
-            //    foreach (Collider2D collider in powerUps)
-            //    {
-            //        float newDist = Vector2.Distance(Instance.transform.position, collider.transform.position);
-            //        if (newDist < dist)
-            //        {
-            //            dist = newDist;
-            //            closestPowerup = collider.gameObject;
-            //        }
-            //    }
-
-            //    if (closestPowerup != null)
-            //    {
-            //        AddSubGoal(new GetPowerUp(closestPowerup));
-            //    }
-            //}
-
             return ProcessSubGoals();
         }
 
