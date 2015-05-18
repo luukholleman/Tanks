@@ -42,42 +42,34 @@ namespace Assets.Scripts.Goals
 
         public STATUS ProcessSubGoals()
         {
-            try
+            while (SubGoals.Any() && (SubGoals.Peek().Status == STATUS.COMPLETED || SubGoals.Peek().Status == STATUS.FAILED))
             {
-                while (SubGoals.Any() && (SubGoals.Peek().Status == STATUS.COMPLETED || SubGoals.Peek().Status == STATUS.FAILED))
-                {
-                    Goal goal = SubGoals.Pop();
+                Goal goal = SubGoals.Pop();
 
-                    goal.Terminate();
+                goal.Terminate();
+            }
+
+            if (SubGoals.Any())
+            {
+                Goal subGoal = SubGoals.Peek();
+
+                if (subGoal.Status == STATUS.INACTIVE)
+                {
+                    subGoal.Activate();
+                    subGoal.Status = STATUS.ACTIVE;
                 }
 
-                if (SubGoals.Any())
+                STATUS status = subGoal.Process();
+
+                if (status == STATUS.COMPLETED && subGoal.SubGoals.Any())
                 {
-                    Goal subGoal = SubGoals.Peek();
-
-                    if (subGoal.Status == STATUS.INACTIVE)
-                    {
-                        subGoal.Activate();
-                        subGoal.Status = STATUS.ACTIVE;
-                    }
-
-                    STATUS status = subGoal.Process();
-
-                    if (status == STATUS.COMPLETED && subGoal.SubGoals.Any())
-                    {
-                        return STATUS.ACTIVE;
-                    }
-
-                    return status;
+                    return STATUS.ACTIVE;
                 }
 
-                return STATUS.COMPLETED;
+                return status;
             }
-            catch (Exception)
-            {
-                Debug.LogWarning("Exception in ProcessSubgoals");
-                return STATUS.FAILED;
-            }
+
+            return STATUS.COMPLETED;
         }
 
         public void RemoveAllSubGoals()
