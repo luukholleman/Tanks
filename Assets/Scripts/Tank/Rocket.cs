@@ -28,7 +28,7 @@ namespace Assets.Scripts.Tank
         {
             if (!_exploded)
             {
-                GetComponent<AudioSource>().Play();
+                //GetComponent<AudioSource>().Play();
                 GameObject explosion = Instantiate(Resources.Load<GameObject>("PreFabs/Explosion"), transform.position, new Quaternion()) as GameObject;
 
                 explosion.GetComponent<Explosion>().Side = Side;
