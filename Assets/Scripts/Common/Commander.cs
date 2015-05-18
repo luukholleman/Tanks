@@ -33,7 +33,7 @@ public class Commander : MonoBehaviour
 
             if (_clicked != null)
             {
-                _clicked.GetComponent<StateMachine>().CurrentState = new GoToPointState(new Vector2(ray.origin.x, ray.origin.y));
+                //_clicked.GetComponent<StateMachine>().CurrentState = new GoToPointState(new Vector2(ray.origin.x, ray.origin.y));
             }
         }
 	}
