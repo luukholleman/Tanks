@@ -17,6 +17,12 @@ namespace Assets.Scripts.Goals.Tank
 
         public override void Activate()
         {
+            if (_powerUp == null)
+            {
+                SetStatus(STATUS.FAILED);
+                return;
+            }   
+
             AddSubGoal(new FollowPath(_powerUp.transform.position));
         }
 
