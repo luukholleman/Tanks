@@ -52,6 +52,7 @@ namespace Assets.Scripts.Goals.Tank
 
             if ((SubGoals.Any() && SubGoals.Peek().GetType() != newGoal.GetType()) || !SubGoals.Any())
             {
+                RemoveAllSubGoals();
                 AddSubGoal(newGoal);
             }
 
