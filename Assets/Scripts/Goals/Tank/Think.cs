@@ -27,20 +27,20 @@ namespace Assets.Scripts.Goals.Tank
 
         public override void Activate()
         {
-            int rand = (int)(Random.value * 15);
+            //int rand = (int)(Random.value * 15);
 
-            Debug.Log(rand);
+            //Debug.Log(rand);
 
-            if (rand < 2)
-                AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Stables")));
-            else if (rand < 4)
-                AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Farm")));
-            else if (rand < 7)
-                AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Gold Mine")));
-            else if (rand < 10)
-                AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Lumber Mill")));
-            else if (rand < 15)
-                AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Blacksmith")));
+            //if (rand < 2)
+            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Stables")));
+            //else if (rand < 4)
+            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Farm")));
+            //else if (rand < 7)
+            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Gold Mine")));
+            //else if (rand < 10)
+            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Lumber Mill")));
+            //else if (rand < 15)
+            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Blacksmith")));
         }
         
         public override STATUS Process()
