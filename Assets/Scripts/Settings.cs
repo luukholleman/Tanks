@@ -11,6 +11,8 @@ public class Settings : MonoBehaviour
     public int Width;
     public int Height;
 
+    public int TankSpawnDelay;
+
     void Awake()
     {
         Instance = this;
