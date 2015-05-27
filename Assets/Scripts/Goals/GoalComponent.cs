@@ -11,8 +11,10 @@ namespace Assets.Scripts.Goals
     {
         public Goal Think = new Think();
 
-        void Start()
+        void Awake()
         {
+            Think.RemoveAllSubGoals();
+
             Think.SetGameObject(gameObject);
             Think.Activate();
         }

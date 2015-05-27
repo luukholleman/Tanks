@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Pathfinding
 {
@@ -58,23 +60,43 @@ namespace Assets.Scripts.Pathfinding
 
         void Update()
         {
-            if (Settings.DebugState)
-            {
-                foreach (GraphNode node in Graph.Instance.GetNodes())
-                {
-                    Debug.DrawLine(node.Position, node.Position + new Vector2(0.1f, 0.1f), Color.red, Time.deltaTime);
-                    foreach (GraphEdge edge in node.Edges)
-                    {
-                        Debug.DrawLine(node.Position, Instance.GetNode(edge.To).Position, Color.black, Time.deltaTime);
-                    }
-                }
-            }
+        }
+
+        public GameObject DrawEdge(GraphNode node1, GraphNode node2, Color color)
+        {
+            GameObject parent = GameObject.Find("Common/Graph");
+
+            GameObject quadLine =
+                Instantiate(Resources.Load<GameObject>("PreFabs/Line"), node1.Position, new Quaternion()) as
+                    GameObject;
+
+            float angle =
+                (float)
+                    Math.Atan2(node1.Position.y - node2.Position.y, node1.Position.x - node2.Position.x) *
+                (180 / (float)Math.PI);
+
+            angle += 90;
+
+            quadLine.transform.rotation = Quaternion.Euler(0, 0, angle);
+
+            Vector3 newPosition = node1.Position + (node2.Position - node1.Position) / 2;
+
+            quadLine.transform.position = newPosition;
+
+            float dist = Vector2.Distance(node1.Position, node2.Position);
+
+            quadLine.transform.localScale = new Vector3(0.1f, dist, 1f);
+
+            quadLine.transform.parent = parent.transform;
+
+            quadLine.GetComponent<Renderer>().material.color = color;
+
+            return quadLine;
         }
 
         public static readonly int InvalidNodeIndex = -1;
 
         private List<GraphNode> nodes = new List<GraphNode>();
-        //private Dictionary<string, GraphEdge> edges = new Dictionary<string, GraphEdge>();
 
         public int NextIndex { get { return _nextIndex++; } }
 
@@ -89,11 +111,6 @@ namespace Assets.Scripts.Pathfinding
         {
             get { return nodes.Count(n => n.Index != InvalidNodeIndex); }
         }
-
-        //public int EdgeCount
-        //{
-        //    get { return edges.Count; }
-        //}
 
         public bool IsEmpty
         {

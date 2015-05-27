@@ -13,6 +13,10 @@ namespace Assets.Scripts.Goals.Tank
 
         private Pathfinding.AStar _aStar;
 
+        private bool draw = false;
+
+        private List<GameObject> lines = new List<GameObject>(); 
+
         private bool _pathSetup;
 
         public FollowPath(Vector2 position)
@@ -29,6 +33,8 @@ namespace Assets.Scripts.Goals.Tank
 
         public override STATUS Process()
         {
+            DrawPath();
+
             if (!_aStar.Path.Any())
             {
                 _aStar.Search();
@@ -55,9 +61,35 @@ namespace Assets.Scripts.Goals.Tank
             return ProcessSubGoals();
         }
 
+        void DrawPath()
+        {
+            if (Input.GetKey(KeyCode.P))
+            {
+                draw = !draw;
+
+                if (draw)
+                {
+                    GraphNode last = null;
+
+                    foreach (GraphNode node in _aStar.Path)
+                    {
+                        if (last != null)
+                        {
+                            lines.Add(Graph.Instance.DrawEdge(node, last, Color.red));
+                        }
+
+                        last = node;
+                    }   
+                }
+            }
+        }
+
         public override void Terminate()
         {
-            //Debug.Log("Followed path to " + _target.x + ", " + _target.y);
+            foreach (GameObject gameObject in lines)
+            {
+                GameObject.Destroy(gameObject);
+            }
         }
 
         public override bool HandleMessage()

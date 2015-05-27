@@ -87,7 +87,7 @@ namespace Assets.Scripts.Pathfinding
                     float distance = Vector2.Distance(_graph.GetNode(_target).Position,
                         _graph.GetNode(smallest).Position);
 
-                    var alt = _distances[smallest] + neighbor.Cost + Random.value / 100;
+                    var alt = _distances[smallest] + neighbor.Cost;
 
                     if (alt < _distances[neighbor.To])
                     {
