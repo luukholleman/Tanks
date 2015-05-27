@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using UnityEngine;
+﻿using UnityEngine;
 
-namespace Assets.Scripts.Goals.Evaluator.Tank
+namespace Assets.Scripts.Goals.Evaluator
 {
     class GetPowerUp : GoalEvaluator
     {
@@ -66,7 +62,7 @@ namespace Assets.Scripts.Goals.Evaluator.Tank
 
         public override Goal GetGoal()
         {
-            return new Goals.Tank.GetPowerUp(_powerUp);
+            return new Goals.GetPowerUp(_powerUp);
         }
     }
 }

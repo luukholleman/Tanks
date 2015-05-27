@@ -7,23 +7,14 @@ namespace Assets.Scripts.StateMachines.PowerUp
     public class IdleState : IState
     {
 
-        private float _lastDrop;
-        private float _nextDrop;
-
         public void Update(GameObject instance)
         {
-            _lastDrop += Time.fixedDeltaTime;
 
-            if (_lastDrop >= _nextDrop)
-            {
-                instance.GetComponent<StateMachine>().CurrentState = new DropItemState(Graph.Instance.GetRandomNode().Position);
-            }
         }
 
         public void Enter(GameObject instance)
         {
-            _lastDrop = 0;
-            _nextDrop = Random.value*5 + 2;
+
         }
 
         public void Exit(GameObject instance)

@@ -2,7 +2,7 @@
 using Assets.Scripts.Pathfinding;
 using UnityEngine;
 
-namespace Assets.Scripts.Goals.Tank
+namespace Assets.Scripts.Goals
 {
     class GoToNode : Goal
     {

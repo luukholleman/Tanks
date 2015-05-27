@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.Goals.Fuzzy;
+﻿using Assets.Scripts.Goals.Fuzzy;
 using Assets.Scripts.Goals.Fuzzy.Operator;
 using Assets.Scripts.Goals.Fuzzy.Set;
 using UnityEngine;
 
-namespace Assets.Scripts.Goals.Evaluator.Tank
+namespace Assets.Scripts.Goals.Evaluator
 {
     class CaptureFlag : GoalEvaluator
     {
@@ -63,7 +59,7 @@ namespace Assets.Scripts.Goals.Evaluator.Tank
 
         public override Goal GetGoal()
         {
-            return new Goals.Tank.CaptureFlag(_flag);
+            return new Goals.CaptureFlag(_flag);
         }
     }
 }

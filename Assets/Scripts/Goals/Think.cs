@@ -3,7 +3,7 @@ using System.Linq;
 using Assets.Scripts.Goals.Evaluator;
 using UnityEngine;
 
-namespace Assets.Scripts.Goals.Tank
+namespace Assets.Scripts.Goals
 {
     class Think : Goal
     {
@@ -11,8 +11,8 @@ namespace Assets.Scripts.Goals.Tank
 
         public Think()
         {
-            Evaluators.Add(new Evaluator.Tank.CaptureFlag());
-            Evaluators.Add(new Evaluator.Tank.GetPowerUp());
+            Evaluators.Add(new Evaluator.CaptureFlag());
+            Evaluators.Add(new Evaluator.GetPowerUp());
         }
 
         public override void SetGameObject(GameObject gameObject)

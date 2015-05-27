@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Linq;
 using UnityEngine;
 
-namespace Assets.Scripts.Goals.Tank
+namespace Assets.Scripts.Goals
 {
     class WaitAtFlagTillCaptured : Goal
     {
