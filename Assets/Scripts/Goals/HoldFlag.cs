@@ -4,38 +4,35 @@ using UnityEngine;
 
 namespace Assets.Scripts.Goals
 {
-    class CaptureFlag : Goal
+    class HoldFlag : Goal
     {
         private GameObject _flag;
 
-        public CaptureFlag(GameObject flag)
+        public HoldFlag(GameObject flag)
         {
             _flag = flag;
         }
 
         public override void Activate()
         {
-            String msg = "Going to attack " + _flag.name;
-
+            String msg = "Omw to hold " + _flag.name;
             Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
-
             Messenger.Dispatch();
 
-            AddSubGoal(new WaitAtFlagTillCaptured(_flag));
+            Instance.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+
+            AddSubGoal(new WaitAtFlag(_flag));
             AddSubGoal(new FollowPath(_flag.transform.position));
         }
 
         public override STATUS Process()
         {
-            if(_flag.GetComponent<Flag>().Side == Instance.GetComponent<Vehicle>().Side)
-                return SetStatus(STATUS.COMPLETED);
-
             return ProcessSubGoals();
         }
 
         public override void Terminate()
         {
-
+            
         }
 
         public override bool HandleMessage()

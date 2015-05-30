@@ -4,21 +4,19 @@ using UnityEngine;
 
 namespace Assets.Scripts.Goals
 {
-    class CaptureFlag : Goal
+    class DefendFlag : Goal
     {
         private GameObject _flag;
 
-        public CaptureFlag(GameObject flag)
+        public DefendFlag(GameObject flag)
         {
             _flag = flag;
         }
 
         public override void Activate()
         {
-            String msg = "Going to attack " + _flag.name;
-
+            String msg = "Going to defend " + _flag.name;
             Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
-
             Messenger.Dispatch();
 
             AddSubGoal(new WaitAtFlagTillCaptured(_flag));
@@ -27,15 +25,12 @@ namespace Assets.Scripts.Goals
 
         public override STATUS Process()
         {
-            if(_flag.GetComponent<Flag>().Side == Instance.GetComponent<Vehicle>().Side)
-                return SetStatus(STATUS.COMPLETED);
-
             return ProcessSubGoals();
         }
 
         public override void Terminate()
         {
-
+            
         }
 
         public override bool HandleMessage()

@@ -24,8 +24,6 @@ namespace Assets.Scripts.Goals
 
         public override void Activate()
         {
-            //Debug.Log("Following path from " + Instance.transform.position.x + ", " + Instance.transform.position.y + " to " + _target.x + ", " + _target.y);
-
             _aStar = new AStar(Graph.Instance, Graph.Instance.GetNode(Instance.transform.position).Index, Graph.Instance.GetNode(_target).Index);
         }
 

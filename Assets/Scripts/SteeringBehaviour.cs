@@ -267,18 +267,18 @@ namespace Assets.Scripts
 
         public Vector2 Separation(List<GameObject> neighbours)
         {
-            Vector2 SteeringForce = Vector2.zero;
+            Vector2 steeringForce = Vector2.zero;
 
             foreach (GameObject gameObject in neighbours)
             {
-                Vector2 ToAgent = _instance.transform.position - gameObject.transform.position;
+                Vector2 toAgent = _instance.transform.position - gameObject.transform.position;
 
                 //scale the force inversely proportional to the agents distance  
                 //from its neighbor.
-                SteeringForce += ToAgent.normalized / ToAgent.magnitude;
+                steeringForce += toAgent.normalized / toAgent.magnitude;
             }
 
-            return SteeringForce;
+            return steeringForce;
         }
 
 

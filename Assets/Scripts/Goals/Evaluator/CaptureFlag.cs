@@ -53,7 +53,7 @@ namespace Assets.Scripts.Goals.Evaluator
             module["DistToFlag"].Fuzzify(dist);
 
             float crisp = module.Defuzzify("Desirability");
-
+            
             return crisp;
         }
 

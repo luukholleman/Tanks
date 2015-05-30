@@ -28,7 +28,7 @@ namespace Assets.Scripts.StateMachines.Messaging
             if (gameObjects != null)
                 foreach (GameObject gameObject in gameObjects)
                 {
-                    Message newMsg = new Message(msg.Sender, gameObject, msg.Msg);
+                    Message newMsg = new Message(msg.Sender, gameObject, msg.Msg, msg.ExtraInfo);
                     SendMessage(newMsg);
                 }
         }

@@ -1,14 +1,19 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 using Assets.Scripts;
 using Assets.Scripts.StateMachines;
 using Assets.Scripts.StateMachines.Messaging;
 
-[RequireComponent(typeof(Vehicle))]
-public class Tank : MonoBehaviour {
-
+namespace Assets.Scripts.Tank
+{
+public class TankComponent : MonoBehaviour
+{
 	// Use this for initialization
-	void Start () {
+	void Start ()
+	{
+	    name = new Namer().Name;
+
         if (GetComponent<Vehicle>().Side == Player.Side.Blue)
         {
             GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Tanks/tankBlue_outline");
@@ -28,9 +33,5 @@ public class Tank : MonoBehaviour {
             }
         }
 	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+}
 }

@@ -24,16 +24,25 @@ namespace Assets.Scripts.Tank
             }
         }
 
-        void OnCollisionEnter2D(Collision2D collision)
+        void OnTriggerEnter2D(Collider2D collider)
         {
             if (!_exploded)
             {
-                //GetComponent<AudioSource>().Play();
-                GameObject explosion = Instantiate(Resources.Load<GameObject>("PreFabs/Explosion"), transform.position, new Quaternion()) as GameObject;
+                if (collider.gameObject.CompareTag("Tank") && collider.gameObject.GetComponent<Vehicle>().Side != Side)
+                {
+                    //GetComponent<AudioSource>().Play();
+                    GameObject explosion = Instantiate(Resources.Load<GameObject>("PreFabs/Explosion"), transform.position, new Quaternion()) as GameObject;
 
-                explosion.GetComponent<Explosion>().Side = Side;
-                
-                _exploded = true;
+                    explosion.GetComponent<Explosion>().Side = Side;
+
+                    _exploded = true;
+
+                    collider.GetComponent<Vehicle>().Health -= Damage;
+
+                    Vector2 force = transform.InverseTransformPoint(collider.transform.position);
+
+                    collider.GetComponent<Rigidbody2D>().AddForceAtPosition(-force * 500, transform.position);
+                }
             }
         }
     }

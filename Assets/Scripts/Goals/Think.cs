@@ -9,10 +9,18 @@ namespace Assets.Scripts.Goals
     {
         public List<GoalEvaluator> Evaluators = new List<GoalEvaluator>();
 
+        private float _nextEvaluation;
+
         public Think()
         {
             Evaluators.Add(new Evaluator.CaptureFlag());
             Evaluators.Add(new Evaluator.GetPowerUp());
+            Evaluators.Add(new Evaluator.DefendFlag());
+            Evaluators.Add(new Evaluator.Attack());
+            Evaluators.Add(new Evaluator.Flee());
+
+            _nextEvaluation = Time.timeSinceLevelLoad;
+            //Evaluators.Add(new Evaluator.HoldFlag());
         }
 
         public override void SetGameObject(GameObject gameObject)
@@ -45,26 +53,31 @@ namespace Assets.Scripts.Goals
         
         public override STATUS Process()
         {
-            GoalEvaluator bestEvaluator = null;
-            float bestScore = float.MinValue;
-
-            foreach (GoalEvaluator evaluator in Evaluators)
+            if (_nextEvaluation < Time.timeSinceLevelLoad)
             {
-                float score = evaluator.CalculateDesirability();
+                GoalEvaluator bestEvaluator = null;
+                float bestScore = float.MinValue;
 
-                if (score > bestScore)
+                foreach (GoalEvaluator evaluator in Evaluators)
                 {
-                    bestScore = score;
-                    bestEvaluator = evaluator;
+                    float score = evaluator.CalculateDesirability();
+
+                    if (score > bestScore)
+                    {
+                        bestScore = score;
+                        bestEvaluator = evaluator;
+                    }
                 }
-            }
 
-            Goal newGoal = bestEvaluator.GetGoal();
+                Goal newGoal = bestEvaluator.GetGoal();
 
-            if ((SubGoals.Any() && SubGoals.Peek().GetType() != newGoal.GetType()) || !SubGoals.Any())
-            {
-                RemoveAllSubGoals();
-                AddSubGoal(newGoal);
+                if ((SubGoals.Any() && SubGoals.Peek().GetType() != newGoal.GetType()) || !SubGoals.Any())
+                {
+                    RemoveAllSubGoals();
+                    AddSubGoal(newGoal);
+                }
+
+                _nextEvaluation = Time.timeSinceLevelLoad + Random.value*0.2f + 0.2f;
             }
 
             return ProcessSubGoals();

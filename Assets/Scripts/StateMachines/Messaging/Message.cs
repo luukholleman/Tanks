@@ -7,7 +7,8 @@ namespace Assets.Scripts.StateMachines.Messaging
         public enum MessageType
         {
             TankDied,
-            PowerUpDropped
+            ChatMessage,
+            DefendingBase
         }
 
         public GameObject Sender;
@@ -15,16 +16,18 @@ namespace Assets.Scripts.StateMachines.Messaging
         public MessageType Msg;
         public object ExtraInfo;
 
-        public Message(GameObject sender, GameObject reciever, MessageType msg)
+        public Message(GameObject sender, GameObject reciever, MessageType msg, object extraInfo = null)
         {
             Sender = sender;
             Reciever = reciever;
             Msg = msg;
+            ExtraInfo = extraInfo;
         }
-        public Message(GameObject sender, MessageType msg)
+        public Message(GameObject sender, MessageType msg, object extraInfo = null)
         {
             Sender = sender;
             Msg = msg;
+            ExtraInfo = extraInfo;
         }
     }
 }

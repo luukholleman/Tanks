@@ -1,10 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
+using Assets.Scripts.StateMachines.Messaging;
 using UnityEngine;
 
 namespace Assets.Scripts.Goals
 {
-    class WaitAtFlagTillCaptured : Goal
+    class WaitAtFlag : Goal
     {
         private GameObject _flag;
 
@@ -12,13 +15,17 @@ namespace Assets.Scripts.Goals
 
         private Rigidbody2D _rigidbody;
 
-        public WaitAtFlagTillCaptured(GameObject flag)
+        public WaitAtFlag(GameObject flag)
         {
             _flag = flag;
         }
 
         public override void Activate()
         {
+            String msg = "Holding " + _flag.name;
+            Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
+            Messenger.Dispatch();
+
             _steeringBehaviour = SteeringBehaviour.CreateInstance<SteeringBehaviour>();
 
             _steeringBehaviour.SetGameObject(Instance);
@@ -28,12 +35,7 @@ namespace Assets.Scripts.Goals
 
         public override STATUS Process()
         {
-            _rigidbody.AddForce(_steeringBehaviour.Stop(_rigidbody.velocity, 0.1f));
-
-            if (_flag.GetComponent<Flag>().Side == Instance.GetComponent<Vehicle>().Side && Math.Abs(_flag.GetComponent<Flag>().Score) == _flag.GetComponent<Flag>().MaxScore)
-            {
-                return SetStatus(STATUS.COMPLETED);
-            }
+            _rigidbody.velocity = new Vector2(0, 0);
 
             if (Vector2.Distance(Instance.transform.position, _flag.transform.position) > _flag.GetComponent<Flag>().CappingRange)
             {
@@ -49,7 +51,7 @@ namespace Assets.Scripts.Goals
 
         public override void Terminate()
         {
-            Debug.Log("Flag " + _flag + " is captured");
+
         }
 
         public override bool HandleMessage()

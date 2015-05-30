@@ -1,11 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using Assets.Scripts.Goals;
 using Assets.Scripts.Tank;
 
 public class Barrel : MonoBehaviour {
     
     private float _lastShot = 0;
+
+    public float Damage;
 
 	// Use this for initialization
 	void Start () {
@@ -13,23 +17,33 @@ public class Barrel : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update () {
-        Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 20, LayerMask.GetMask("Robot", "Tank"));
-
+    void Update()
+    {
         GameObject closestGameObject = null;
-        float dist = float.MaxValue;
 
-        foreach (Collider2D collider in colliders)
+        if (GetComponentInParent<GoalComponent>() != null && GetComponentInParent<GoalComponent>().Think.SubGoals.Any() && GetComponentInParent<GoalComponent>().Think.SubGoals.Peek().GetType() == typeof(Attack))
+	    {
+            closestGameObject = ((Attack)GetComponentInParent<GoalComponent>().Think.SubGoals.Peek()).Target;
+	    }
+	    else
         {
-            if(collider.gameObject.GetComponent<Vehicle>().Side == GetComponentInParent<Vehicle>().Side)
-                continue;
+            //Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 20, LayerMask.GetMask("Robot", "Tank"));
 
-            if (Vector2.Distance(transform.position, collider.gameObject.transform.position) < dist && collider.GetComponent<Vehicle>().Side != GetComponentInParent<Vehicle>().Side)
-            {
-                closestGameObject = collider.gameObject;
-                dist = Vector2.Distance(collider.gameObject.transform.position, transform.position);
-            }
-        }
+            //float dist = float.MaxValue;
+
+            //foreach (Collider2D collider in colliders)
+            //{
+            //    if (collider.gameObject.GetComponent<Vehicle>().Side == GetComponentInParent<Vehicle>().Side)
+            //        continue;
+
+            //    if (Vector2.Distance(transform.position, collider.gameObject.transform.position) < dist && collider.GetComponent<Vehicle>().Side != GetComponentInParent<Vehicle>().Side)
+            //    {
+            //        closestGameObject = collider.gameObject;
+            //        dist = Vector2.Distance(collider.gameObject.transform.position, transform.position);
+            //    }
+            //}
+	    }
+
         if (closestGameObject != null)
         {
             // turn barrel to object
@@ -47,12 +61,12 @@ public class Barrel : MonoBehaviour {
 
             if (_lastShot + GetComponentInParent<Vehicle>().ReloadSpeed < Time.time)
             {
-                GameObject rocket = Instantiate(Resources.Load<GameObject>("PreFabs/Rocket"), transform.position + transform.TransformVector(new Vector3(0, 1, 0)), transform.rotation) as GameObject;
+                GameObject rocket = Instantiate(Resources.Load<GameObject>("PreFabs/Rocket"), transform.position, transform.rotation) as GameObject;
 
                 rocket.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector2(0, 5000));
 
                 rocket.GetComponent<Rocket>().Side = GetComponentInParent<Vehicle>().Side;
-                rocket.GetComponent<Rocket>().Damage = 50;
+                rocket.GetComponent<Rocket>().Damage = Damage;
 
                 _lastShot = Time.time;
             }

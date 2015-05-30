@@ -8,9 +8,13 @@ public class Flag : MonoBehaviour
 
     public float Score = 0;
 
+    public readonly float MaxScore = 10;
+
     public Player.Side Side = Player.Side.None;
 
     public float CappingRange = 2;
+
+    public float ScorePerTank = 0.3f;
 
 	// Use this for initialization
 	void Start () {
@@ -45,22 +49,22 @@ public class Flag : MonoBehaviour
 
             if (tank.GetComponent<Vehicle>().Side == Player.Side.Blue)
             {
-                Score += 1 * Time.fixedDeltaTime;
+                Score += ScorePerTank * Time.fixedDeltaTime;
             }
             else if (tank.GetComponent<Vehicle>().Side == Player.Side.Red)
             {
-                Score -= 1 * Time.fixedDeltaTime;
+                Score -= ScorePerTank * Time.fixedDeltaTime;
             }
         }
 
-        if (Score > 10)
-            Score = 10;
-        else if (Score < -10)
-            Score = -10;
+        if (Score > MaxScore)
+            Score = MaxScore;
+        else if (Score < -MaxScore)
+            Score = -MaxScore;
 
-        if(Score > 8)
+        if(Score > 2)
             Side = Player.Side.Blue;
-        else if (Score < -8)
+        else if (Score < -2)
             Side = Player.Side.Red;
         else
             Side = Player.Side.None;

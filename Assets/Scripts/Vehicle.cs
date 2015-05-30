@@ -22,20 +22,12 @@ public class Vehicle : MonoBehaviour
     private Vector3[] _directions = new Vector3[num];
 
     private int _key;
-
-    // Use this for initialization
-    void Start()
-    {
-
-    }
-
+    
     void Update()
     {
         if (Health <= 0)
         {
-            GameObject dropper = GameObject.Find("PowerUpDropper");
-
-            Message msg = new Message(gameObject, dropper, Message.MessageType.TankDied);
+            Message msg = new Message(gameObject, Message.MessageType.TankDied);
 
             Messenger.BroadcastMessage(msg);
 
@@ -72,13 +64,5 @@ public class Vehicle : MonoBehaviour
         Vector3 rotNew = new Vector3(0, 0, angle);
 
         transform.rotation = Quaternion.Euler(rotNew);
-    }
-
-    void OnCollisionEnter2D(Collision2D collision)
-    {
-        if (collision.gameObject.CompareTag("Rocket") && collision.gameObject.GetComponent<Rocket>().Side != Side)
-        {
-            Health -= collision.gameObject.GetComponent<Rocket>().Damage;
-        }
     }
 }

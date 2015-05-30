@@ -7,18 +7,14 @@ using UnityEngine;
 
 namespace Assets.Scripts.StateMachines
 {
-    public interface IState
+    public abstract class IState
     {
-        void Update(GameObject instance);
-        void Enter(GameObject instance);
-        void Exit(GameObject instance);
-        void DebugDraw(GameObject instance);
-        void CollisionEnter(GameObject instance, Collision2D collision);
-        void CollisionExit(GameObject instance, Collision2D collision);
-        void CollisionStay(GameObject instance, Collision2D collision);
-        void TriggerEnter(GameObject instance, Collider2D collider);
-        void TriggerExit(GameObject instance, Collider2D collider);
-        void TriggerStay(GameObject instance, Collider2D collider);
-        void HandleMessage(GameObject instance, Message msg);
+        public abstract void Update(GameObject instance);
+        public abstract void Enter(GameObject instance);
+        public abstract void Exit(GameObject instance);
+
+        public virtual void OnGUI() { }
+
+        public virtual void HandleMessage(GameObject instance, Message msg) { }
     }
 }

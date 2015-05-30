@@ -90,7 +90,7 @@ public class Scoring : MonoBehaviour {
     {
         GUI.Label(new Rect(Screen.width / 2, 10, 100, 20), "Red " + Math.Round(redScore), redStyle);
         GUI.Label(new Rect(Screen.width / 2, 25, 100, 20), "Blue " + Math.Round(blueScore), blueStyle);
-        GUI.Label(new Rect(Screen.width / 2, 40, 100, 20), "Time elapsed " + Time.realtimeSinceStartup);
+        GUI.Label(new Rect(Screen.width / 2, 40, 150, 20), "Time elapsed " + (int)Time.timeSinceLevelLoad);
 
         if (blueScore > WinningScore)
             GUI.Label(new Rect(Screen.width / 2 - 75, Screen.height / 2, 150, 50), "Blue Won!!!", blueWinStyle);
@@ -102,6 +102,7 @@ public class Scoring : MonoBehaviour {
         {
             if (GUI.Button(new Rect(Screen.width / 2 - 75, Screen.height / 2 + 60, 200, 30), "Restart Level"))
             {
+                Time.timeScale = 1f;
                 Application.LoadLevel(Application.loadedLevelName);
             }
         }

@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 using System.Collections;
 
 public class PowerUp : MonoBehaviour
@@ -25,6 +26,8 @@ public class PowerUp : MonoBehaviour
             collision.gameObject.GetComponent<Vehicle>().MaxSpeed += MovementSpeed;
             collision.gameObject.GetComponent<Vehicle>().ReloadSpeed += ReloadSpeed;
             collision.gameObject.GetComponent<Vehicle>().Health += Repair;
+
+            collision.gameObject.GetComponent<Vehicle>().Health = Math.Min(collision.gameObject.GetComponent<Vehicle>().Health, 100);
         }
 
         Destroy(gameObject);

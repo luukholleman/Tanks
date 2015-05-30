@@ -31,8 +31,6 @@ namespace Assets.Scripts
                 newTank.GetComponent<Vehicle>().Side = Side;
 
             }
-
-            GetComponent<StateMachine>().CurrentState = new IdleState();
         }
 	
         // Update is called once per frame

@@ -10,7 +10,7 @@ namespace Assets.Scripts.Goals
     {
         public Goal Think = new Think();
 
-        void Awake()
+        void Start()
         {
             Think.RemoveAllSubGoals();
 
