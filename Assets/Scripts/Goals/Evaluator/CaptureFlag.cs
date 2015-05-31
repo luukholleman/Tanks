@@ -73,7 +73,7 @@ namespace Assets.Scripts.Goals.Evaluator
 
             float crisp = module.Defuzzify("Desirability");
 
-            Debug.Log(dist + ", " + ratio + ", " + crisp);
+            //Debug.Log(dist + ", " + ratio + ", " + crisp);
             
             return crisp;
 
