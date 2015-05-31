@@ -24,6 +24,8 @@ namespace Assets.Scripts.Goals
             _steeringBehaviour.SetGameObject(Instance);
 
             _rigidbody = Instance.GetComponent<Rigidbody2D>();
+
+            _rigidbody.velocity = Vector2.zero;
         }
 
         public override STATUS Process()
