@@ -42,16 +42,7 @@ namespace Assets.Scripts.Goals
             Vector2 steeringForce = Vector2.zero;
 
             steeringForce += _steeringBehaviour.Pursuit(Target.transform.position, Target.GetComponent<Rigidbody2D>().velocity);
-
-            Collider2D[] colliders = Physics2D.OverlapCircleAll(Instance.transform.position, 2f, LayerMask.GetMask("Tank"));
-            List<GameObject> neighbours = new List<GameObject>();
-
-            foreach (Collider2D collider2D in colliders) 
-                if (collider2D.gameObject != Instance.gameObject) neighbours.Add(collider2D.gameObject);
-
-            steeringForce += _steeringBehaviour.Separation(neighbours);
-
-            steeringForce = steeringForce.normalized * Instance.transform.GetComponent<Vehicle>().MaxSpeed;
+            steeringForce += _steeringBehaviour.ObstacleAvoidance(Physics2D.OverlapCircleAll(Instance.transform.position, 10f, LayerMask.GetMask("Obstacle")));
 
             _rigidbody.AddForce(steeringForce);
 
