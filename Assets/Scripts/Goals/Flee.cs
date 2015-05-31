@@ -40,7 +40,12 @@ namespace Assets.Scripts.Goals
             if (_tank == null)
                 return SetStatus(STATUS.COMPLETED);
 
-            _rigidbody.AddForce(_steeringBehaviour.Flee(_tank.transform.position));
+            Vector2 steeringForce = Vector2.zero;
+
+            steeringForce += _steeringBehaviour.Flee(_tank.transform.position);
+            steeringForce += _steeringBehaviour.ObstacleAvoidance(Physics2D.OverlapCircleAll(Instance.transform.position, 10f, LayerMask.GetMask("Obstacle")));
+
+            _rigidbody.AddForce(steeringForce * 1.2f);
 
             return SetStatus(STATUS.ACTIVE);
         }
