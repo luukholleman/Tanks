@@ -39,9 +39,9 @@ namespace Assets.Scripts.Tank
 
                     collider.GetComponent<Vehicle>().Health -= Damage;
 
-                    Vector2 force = transform.InverseTransformPoint(collider.transform.position);
+                    //Vector2 force = transform.InverseTransformPoint(collider.transform.position);
 
-                    collider.GetComponent<Rigidbody2D>().AddForceAtPosition(-force * 500, transform.position);
+                    //collider.GetComponent<Rigidbody2D>().AddForceAtPosition(-force * 500, transform.position);
                 }
             }
         }
