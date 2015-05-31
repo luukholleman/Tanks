@@ -45,7 +45,7 @@ namespace Assets.Scripts.Goals
             steeringForce += _steeringBehaviour.Flee(_tank.transform.position);
             steeringForce += _steeringBehaviour.ObstacleAvoidance(Physics2D.OverlapCircleAll(Instance.transform.position, 10f, LayerMask.GetMask("Obstacle")));
 
-            _rigidbody.AddForce(steeringForce * 1.2f);
+            _rigidbody.AddForce(steeringForce * 2f);
 
             return SetStatus(STATUS.ACTIVE);
         }
