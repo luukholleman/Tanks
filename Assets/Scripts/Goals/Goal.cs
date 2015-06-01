@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Goals
 {
-    internal abstract class Goal
+    internal abstract class Goal : IComparable
     {
         public GameObject Instance;
 
@@ -87,5 +87,7 @@ namespace Assets.Scripts.Goals
             Status = status;
             return status;
         }
+
+        public abstract int CompareTo(object obj);
     }
 }

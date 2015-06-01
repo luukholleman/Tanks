@@ -96,6 +96,8 @@ namespace Assets.Scripts.Goals.Evaluator
             
             float crisp = module.Defuzzify("Desirability");
 
+            crisp -= 0.5f; // because we want that attacking is a little bit more viable than fleeing
+
             return crisp;
         }
 

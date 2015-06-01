@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Assets.Scripts.Pathfinding;
 using Assets.Scripts.StateMachines.Messaging;
+using Assets.Scripts.Tank;
 using UnityEngine;
 
 namespace Assets.Scripts.Goals
@@ -26,6 +27,8 @@ namespace Assets.Scripts.Goals
             //String msg = "FLEEING!!! IMMA GET KILLED";
             //Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
             //Messenger.Dispatch();
+
+            Instance.GetComponentInChildren<ChatBubble>().Text = "IMMA OUTTA HERE";
 
             _steeringBehaviour = ScriptableObject.CreateInstance<SteeringBehaviour>();
 
@@ -58,6 +61,11 @@ namespace Assets.Scripts.Goals
         public override bool HandleMessage()
         {
             return true;
+        }
+
+        public override int CompareTo(object obj)
+        {
+            return ((Flee)obj)._tank == _tank ? 0 : 1;
         }
     }
 }

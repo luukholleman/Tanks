@@ -20,7 +20,8 @@ public class TankComponent : MonoBehaviour
 
             foreach (Transform t in transform)
             {
-                t.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Tanks/barrelBlue_outline");
+                if(t.name == "Barrel")
+                    t.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Tanks/barrelBlue_outline");
             }
         }
         else if (GetComponent<Vehicle>().Side == Player.Side.Red)
@@ -29,7 +30,8 @@ public class TankComponent : MonoBehaviour
 
             foreach (Transform t in transform)
             {
-                t.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Tanks/barrelRed_outline");
+                if (t.name == "Barrel")
+                    t.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>("Tanks/barrelRed_outline");
             }
         }
 	}

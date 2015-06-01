@@ -30,7 +30,8 @@ namespace Assets.Scripts.Goals.Evaluator
 
         public float CalculateDesirabilityForFlag(GameObject flag)
         {
-            if (flag.GetComponent<Flag>().Side == Player.Opposite(Instance.GetComponent<Vehicle>().Side))
+            //if (flag.GetComponent<Flag>().Side == Player.Opposite(Instance.GetComponent<Vehicle>().Side))
+            if (flag.GetComponent<Flag>().Side != Instance.GetComponent<Vehicle>().Side)
                 return 0;
 
             Collider2D[] tanks = Physics2D.OverlapCircleAll(flag.transform.position, flag.GetComponent<Flag>().CappingRange, LayerMask.GetMask("Tank"));

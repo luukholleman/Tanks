@@ -1,5 +1,6 @@
 ﻿using System;
 using Assets.Scripts.StateMachines.Messaging;
+using Assets.Scripts.Tank;
 using UnityEngine;
 
 namespace Assets.Scripts.Goals
@@ -19,6 +20,8 @@ namespace Assets.Scripts.Goals
             Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
             Messenger.Dispatch();
 
+            Instance.GetComponentInChildren<ChatBubble>().Text = "Going to defend " + _flag.name;
+
             AddSubGoal(new WaitAtFlagTillCaptured(_flag));
             AddSubGoal(new FollowPath(_flag.transform.position));
         }
@@ -36,6 +39,11 @@ namespace Assets.Scripts.Goals
         public override bool HandleMessage()
         {
             return true;
+        }
+
+        public override int CompareTo(object obj)
+        {
+            return ((DefendFlag)obj)._flag == _flag ? 0 : 1;
         }
     }
 }

@@ -39,5 +39,10 @@ namespace Assets.Scripts.Goals
         {
             return true;
         }
+
+        public override int CompareTo(object obj)
+        {
+            return ((HoldFlag)obj)._flag == _flag ? 0 : 1;
+        }
     }
 }
