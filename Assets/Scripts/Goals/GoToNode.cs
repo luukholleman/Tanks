@@ -71,9 +71,5 @@ namespace Assets.Scripts.Goals
             return true;
         }
 
-        public override int CompareTo(object obj)
-        {
-            return ((GoToNode)obj)._node == _node ? 0 : 1;
-        }
     }
 }

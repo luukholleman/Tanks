@@ -93,10 +93,5 @@ namespace Assets.Scripts.Goals
             return true;
         }
 
-        public override int CompareTo(object obj)
-        {
-            return ((FollowPath)obj)._target == _target ? 0 : 1;
-        }
-        
     }
 }
