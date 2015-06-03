@@ -20,10 +20,10 @@ namespace Assets.Scripts.Pathfinding
         {
             Instance = this;
 
-            AddGraphNode(new Vector2(0, 0));
+            FloodFill(new Vector2(0, 0));
         }
 
-        void AddGraphNode(Vector2 position)
+        GraphNode FloodFill(Vector2 position)
         {
             _closed.Add(position);
 
@@ -34,7 +34,20 @@ namespace Assets.Scripts.Pathfinding
             {
                 GraphNode node = new GraphNode(position);
 
-                Instance.AddNode(node);
+                AddNode(node);
+                
+                for (int x = -1; x <= 1; x++)
+                {
+                    for (int y = -1; y <= 1; y++)
+                    {
+                        Vector2 newPosition = position + new Vector2(x, y);
+
+                        if (!_closed.Any(n => n == newPosition))
+                        {
+                            FloodFill(newPosition);
+                        }
+                    }
+                }
 
                 List<GraphNode> neighbours = new List<GraphNode>();
 
@@ -46,6 +59,7 @@ namespace Assets.Scripts.Pathfinding
 
                 if (Diagonal)
                 {
+                    // diagonaal
                     neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(NodeDistance, NodeDistance)));
                     neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeDistance, NodeDistance)));
                     neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(NodeDistance, -NodeDistance)));
@@ -54,25 +68,13 @@ namespace Assets.Scripts.Pathfinding
 
                 foreach (GraphNode neighbour in neighbours.Where(n => n != null))
                 {
-                    if (!neighbour.HasEdgeTo(node))
-                    {
-                        neighbour.Edges.Add(new GraphEdge(node.Index, Vector2.Distance(node.Position, neighbour.Position)));
-                    }
-
                     node.Edges.Add(new GraphEdge(neighbour.Index, NodeDistance));
                 }
 
-                for (int x = -1; x <= 1; x++)
-                {
-                    for (int y = -1; y <= 1; y++)
-                    {
-                        Vector2 newPosition = position + new Vector2(x, y);
-
-                        if(!_closed.Any(n => n == newPosition))
-                            AddGraphNode(newPosition);
-                    }
-                }
+                return node;
             }
+
+            return null;
         }
 
         void Update()
