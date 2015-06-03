@@ -14,6 +14,8 @@ namespace Assets.Scripts.StateMachines
         void Start()
         {
             _currentState = System.Reflection.Assembly.GetExecutingAssembly().CreateInstance(typeof(StateMachine).Namespace + "." + StartingState) as IState;
+
+            _currentState.SetGameObject(gameObject);
         }
 
         public IState GlobalState { get; set; }
