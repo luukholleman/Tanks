@@ -28,7 +28,7 @@ namespace Assets.Scripts
                 //newTank.GetComponent<StateMachine>().CurrentState = new FollowPath(dijkstra.Path);
                 //newTank.GetComponent<StateMachine>().CurrentState = new PatrolState();
 
-                newTank.GetComponent<Vehicle>().Side = Side;
+                newTank.GetComponent<global::Assets.Scripts.Tank.Tank>().Side = Side;
 
             }
         }

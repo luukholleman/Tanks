@@ -24,7 +24,7 @@ namespace Assets.Scripts.StateMachines.Base
                 GameObject newTank = GameObject.Instantiate(tank, closestFlag.transform.position + new Vector3(Random.value, Random.value, 0).normalized, new Quaternion()) as GameObject;
                 
                 newTank.transform.parent = GameObject.Find("Tanks").transform;
-                newTank.GetComponent<Vehicle>().Side = instance.GetComponent<Spawn>().Side;
+                newTank.GetComponent<global::Assets.Scripts.Tank.Tank>().Side = instance.GetComponent<Spawn>().Side;
 
                 toRemove.Add(pair.Key);
             }
@@ -40,7 +40,7 @@ namespace Assets.Scripts.StateMachines.Base
             //    GameObject newTank = GameObject.Instantiate(tank, instance.transform.position, new Quaternion()) as GameObject;
 
             //    newTank.transform.parent = GameObject.Find("Tanks").transform;
-            //    newTank.GetComponent<Vehicle>().Side = instance.GetComponent<Spawn>().Side;
+            //    newTank.GetComponent<Tank>().Side = instance.GetComponent<Spawn>().Side;
             //}
 
             //_spawnTimings.RemoveAll(t => t < Time.timeSinceLevelLoad);
@@ -82,7 +82,7 @@ namespace Assets.Scripts.StateMachines.Base
         {
             if (msg.Msg == Message.MessageType.TankDied)
             {
-                if (msg.Sender.GetComponent<Vehicle>().Side == instance.GetComponent<Spawn>().Side)
+                if (msg.Sender.GetComponent<global::Assets.Scripts.Tank.Tank>().Side == instance.GetComponent<Spawn>().Side)
                 {
                     int i = 0;
                     while (true)

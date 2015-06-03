@@ -52,9 +52,9 @@ namespace Assets.Scripts.Goals
             steeringForce += _steeringBehaviour.Cohesion(neighbours);
             steeringForce += _steeringBehaviour.Separation(neighbours);
 
-            steeringForce = steeringForce.normalized * Instance.transform.GetComponent<Vehicle>().MaxSpeed;
+            steeringForce = steeringForce.normalized * Instance.transform.GetComponent<global::Assets.Scripts.Tank.Tank>().MaxSpeed;
 
-            steeringForce += _steeringBehaviour.Seek(_node.Position)*Instance.GetComponent<Vehicle>().MaxSpeed;
+            steeringForce += _steeringBehaviour.Seek(_node.Position)*Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().MaxSpeed;
 
             _rigidbody.AddForce(steeringForce);
 

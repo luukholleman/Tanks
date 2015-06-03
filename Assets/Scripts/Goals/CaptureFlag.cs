@@ -30,7 +30,7 @@ namespace Assets.Scripts.Goals
 
         public override STATUS Process()
         {
-            if (Flag.GetComponent<Flag>().Side == Instance.GetComponent<Vehicle>().Side && Math.Abs(Flag.GetComponent<Flag>().Score) == Flag.GetComponent<Flag>().MaxScore)
+            if (Flag.GetComponent<Flag>().Side == Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side && Math.Abs(Flag.GetComponent<Flag>().Score) == Flag.GetComponent<Flag>().MaxScore)
             {
                 return SetStatus(STATUS.COMPLETED);
             }

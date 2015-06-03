@@ -32,7 +32,7 @@ namespace Assets.Scripts.Goals.Evaluator
 
         public float CalculateDesirabilityForFlag(GameObject flag)
         {
-            if (flag.GetComponent<Flag>().Side == Instance.GetComponent<Vehicle>().Side)
+            if (flag.GetComponent<Flag>().Side == Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side)
                 return 0;
 
             Module module = new Module();
@@ -59,7 +59,7 @@ namespace Assets.Scripts.Goals.Evaluator
 
             int ratio = 0;
             foreach (Collider2D tank in tanks)
-                ratio += (tank.GetComponent<Vehicle>().Side == Instance.GetComponent<Vehicle>().Side) ? 1 : -1;
+                ratio += (tank.GetComponent<global::Assets.Scripts.Tank.Tank>().Side == Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side) ? 1 : -1;
 
             module["AllyCount"].Fuzzify(ratio);
 
@@ -107,7 +107,7 @@ namespace Assets.Scripts.Goals.Evaluator
 
             //int ratio = 0;
             //foreach (Collider2D tank in tanks)
-            //    ratio += (tank.GetComponent<Vehicle>().Side == Instance.GetComponent<Vehicle>().Side) ? 1 : -1;
+            //    ratio += (tank.GetComponent<Tank>().Side == Instance.GetComponent<Tank>().Side) ? 1 : -1;
 
             //module["EnemyAllyRatio"].Fuzzify(ratio);
 

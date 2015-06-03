@@ -2,6 +2,7 @@
 using UnityEngine;
 using System.Collections;
 using Assets.Scripts;
+using Assets.Scripts.Tank;
 
 public class Flag : MonoBehaviour
 {
@@ -47,11 +48,11 @@ public class Flag : MonoBehaviour
             if(Vector2.Distance(tank.position, transform.position) > CappingRange)
                 continue;
 
-            if (tank.GetComponent<Vehicle>().Side == Player.Side.Blue)
+            if (tank.GetComponent<Tank>().Side == Player.Side.Blue)
             {
                 Score += ScorePerTank * Time.deltaTime;
             }
-            else if (tank.GetComponent<Vehicle>().Side == Player.Side.Red)
+            else if (tank.GetComponent<Tank>().Side == Player.Side.Red)
             {
                 Score -= ScorePerTank * Time.deltaTime;
             }

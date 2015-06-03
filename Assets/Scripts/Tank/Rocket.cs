@@ -28,7 +28,7 @@ namespace Assets.Scripts.Tank
         {
             if (!_exploded)
             {
-                if (collider.gameObject.CompareTag("Tank") && collider.gameObject.GetComponent<Vehicle>().Side != Side)
+                if (collider.gameObject.CompareTag("Tank") && collider.gameObject.GetComponent<global::Assets.Scripts.Tank.Tank>().Side != Side)
                 {
                     //GetComponent<AudioSource>().Play();
                     GameObject explosion = Instantiate(Resources.Load<GameObject>("PreFabs/Explosion"), transform.position, new Quaternion()) as GameObject;
@@ -37,7 +37,7 @@ namespace Assets.Scripts.Tank
 
                     _exploded = true;
 
-                    collider.GetComponent<Vehicle>().Health -= Damage;
+                    collider.GetComponent<global::Assets.Scripts.Tank.Tank>().Health -= Damage;
 
                     //Vector2 force = transform.InverseTransformPoint(collider.transform.position);
 

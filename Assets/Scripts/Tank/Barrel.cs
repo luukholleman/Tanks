@@ -37,10 +37,10 @@ public class Barrel : MonoBehaviour {
 
             //foreach (Collider2D collider in colliders)
             //{
-            //    if (collider.gameObject.GetComponent<Vehicle>().Side == GetComponentInParent<Vehicle>().Side)
+            //    if (collider.gameObject.GetComponent<Tank>().Side == GetComponentInParent<Tank>().Side)
             //        continue;
 
-            //    if (Vector2.Distance(transform.position, collider.gameObject.transform.position) < dist && collider.GetComponent<Vehicle>().Side != GetComponentInParent<Vehicle>().Side)
+            //    if (Vector2.Distance(transform.position, collider.gameObject.transform.position) < dist && collider.GetComponent<Tank>().Side != GetComponentInParent<Tank>().Side)
             //    {
             //        closestGameObject = collider.gameObject;
             //        dist = Vector2.Distance(collider.gameObject.transform.position, transform.position);
@@ -63,19 +63,19 @@ public class Barrel : MonoBehaviour {
 
             transform.rotation = Quaternion.Euler(rotNew);
 
-            if (_lastShot + GetComponentInParent<Vehicle>().ReloadSpeed < Time.time)
+            if (_lastShot + GetComponentInParent<Tank>().ReloadSpeed < Time.time)
             {
                 GameObject rocket = Instantiate(Resources.Load<GameObject>("PreFabs/Rocket"), transform.position, transform.rotation) as GameObject;
 
                 rocket.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector2(0, 5000));
 
-                rocket.GetComponent<Rocket>().Side = GetComponentInParent<Vehicle>().Side;
+                rocket.GetComponent<Rocket>().Side = GetComponentInParent<Tank>().Side;
 
                 Collider2D[] flags = Physics2D.OverlapCircleAll(transform.position, RangeFromFlagMultiplier, LayerMask.GetMask("Flag"));
                 bool inRange = false;
                 foreach (Collider2D flag in flags)
                 {
-                    if (flag.GetComponent<Flag>().Side == GetComponentInParent<Vehicle>().Side)
+                    if (flag.GetComponent<Flag>().Side == GetComponentInParent<Tank>().Side)
                     {
                         inRange = true;
                         break;

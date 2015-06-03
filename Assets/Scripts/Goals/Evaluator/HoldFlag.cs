@@ -32,7 +32,7 @@ namespace Assets.Scripts.Goals.Evaluator
         public float CalculateDesirabilityForFlag(GameObject flag)
         {
             // if the flag isnt ours, we can't even hold it
-            if (flag.GetComponent<Flag>().Side != Instance.GetComponent<Vehicle>().Side)
+            if (flag.GetComponent<Flag>().Side != Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side)
                 return 0;
 
             Module module = new Module();
@@ -54,7 +54,7 @@ namespace Assets.Scripts.Goals.Evaluator
             int allies = 0;
 
             foreach (Collider2D tank in tanks)
-                if (tank.GetComponent<Vehicle>().Side == Instance.GetComponent<Vehicle>().Side)
+                if (tank.GetComponent<global::Assets.Scripts.Tank.Tank>().Side == Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side)
                     allies++;
 
             module["HoldFlag"].Fuzzify(15 - allies);
