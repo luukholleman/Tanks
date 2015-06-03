@@ -1,34 +1,58 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace Assets.Scripts.Pathfinding
 {
-    public class PriorityQueue<T>
+    public class PriorityQueue
     {
-        public List<PriorityQueueNode<T>> items = new List<PriorityQueueNode<T>>();
+        private int _size;
+        SortedDictionary<int, Queue> dict;
 
-        public void Enqueue(PriorityQueueNode<T> item)
+        public PriorityQueue()
         {
-            items.Add(item);
+            dict = new SortedDictionary<int, Queue>();
+            _size = 0;
         }
 
-        public PriorityQueueNode<T> DeQueue()
+        public bool IsEmpty()
         {
-            items.Sort((x, y) => (int)(x.Priority - y.Priority));
-
-            PriorityQueueNode<T> item = items[0];
-
-            items.Remove(item);
-
-            return item;
+            return (_size == 0);
         }
 
-        public bool Empty()
+        public object Dequeue()
         {
-            return !items.Any();
+            if (IsEmpty())
+                return null;
+
+            _size--;
+            return dict.Values.First(q => q.Count > 0).Dequeue();
+        }
+
+        public object Peek()
+        {
+            if (IsEmpty())
+                return null;
+
+            return dict.Values.First(q => q.Count > 0).Peek();
+        }
+
+        public object Dequeue(int key)
+        {
+            _size--;
+            return dict[key].Dequeue();
+        }
+
+        public void Enqueue(object item, int key)
+        {
+            if (!dict.ContainsKey(key))
+                dict.Add(key, new Queue());
+
+            _size++;
+            dict[key].Enqueue(item);
         }
     }
 }

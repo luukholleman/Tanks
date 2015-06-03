@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 using Random = UnityEngine.Random;
@@ -20,11 +21,13 @@ namespace Assets.Scripts.Pathfinding
         Dictionary<int, int> _previous = new Dictionary<int, int>();
         Dictionary<int, float> _distances = new Dictionary<int, float>();
         public List<int> Closed = new List<int>();
-        PriorityQueue<int> pq = new PriorityQueue<int>();
+        //PriorityQueue<int> pq = new PriorityQueue<int>();
+
+        PriorityQueue pq = new PriorityQueue();
 
         int i = 0;
 
-        private int _iterationsPerCall = 10;
+        private int _iterationsPerCall = 25;
 
         Stopwatch sw = new Stopwatch();
         public AStar(Graph graph, int source, int target)
@@ -41,11 +44,11 @@ namespace Assets.Scripts.Pathfinding
                 }
                 else
                 {
-                    _distances[vertex.Index] = 900001;
+                    _distances[vertex.Index] = float.MaxValue;
                 }
             }
 
-            pq.Enqueue(new PriorityQueueNode<int>(0, _source));
+            pq.Enqueue(_source, 0);
         }
 
         public bool Search()
@@ -53,12 +56,14 @@ namespace Assets.Scripts.Pathfinding
             int j = 0;
 
             sw.Start();
-            while (!pq.Empty())
+
+            while (!pq.IsEmpty())
             {
                 i++;
 
-                var smallest = pq.DeQueue().Value;
+                var smallest = (int)pq.Dequeue();
 
+                // we've found the path
                 if (smallest == _target)
                 {
                     while (_previous.ContainsKey(smallest))
@@ -68,35 +73,38 @@ namespace Assets.Scripts.Pathfinding
                     }
 
                     sw.Stop();
-                    //Debug.Log("Path found!!");
-                    //Debug.Log("Iterations: " + i);
-                    //Debug.Log(sw.Elapsed);
+
+                    Debug.Log("Path found!!");
+                    Debug.Log("Iterations: " + i);
+                    Debug.Log(sw.Elapsed);
 
                     Path.Reverse();
 
                     return true;
                 }
 
-                if (_distances[smallest] == 900001)
+                // can't find a path
+                if (_distances[smallest] == float.MaxValue)
                 {
                     return false;
                 }
 
                 foreach (var neighbor in _graph.GetNode(smallest).Edges)
                 {
-                    float distance = Vector2.Distance(_graph.GetNode(_target).Position,
-                        _graph.GetNode(smallest).Position);
+                    var alternativeCost = _distances[smallest] + neighbor.Cost;
 
-                    var alt = _distances[smallest] + neighbor.Cost;
-
-                    if (alt < _distances[neighbor.To])
+                    if (alternativeCost < _distances[neighbor.To])
                     {
-                        _distances[neighbor.To] = alt;
+                        _distances[neighbor.To] = alternativeCost;
                         _previous[neighbor.To] = smallest;
                     }
 
                     if (!Closed.Exists(n => n == neighbor.To))
-                        pq.Enqueue(new PriorityQueueNode<int>(alt + distance, neighbor.To));
+                    {
+                        float distance = Vector2.Distance(_graph.GetNode(_target).Position, _graph.GetNode(smallest).Position);
+                        
+                        pq.Enqueue(neighbor.To, (int)(alternativeCost + distance));
+                    }
 
                     Closed.Add(neighbor.To);
                 }
