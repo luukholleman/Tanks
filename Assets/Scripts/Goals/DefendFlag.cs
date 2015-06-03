@@ -7,23 +7,23 @@ namespace Assets.Scripts.Goals
 {
     class DefendFlag : Goal
     {
-        private GameObject _flag;
+        public readonly GameObject Flag;
 
         public DefendFlag(GameObject flag)
         {
-            _flag = flag;
+            Flag = flag;
         }
 
         public override void Activate()
         {
-            String msg = "Going to defend " + _flag.name;
+            String msg = "Going to defend " + Flag.name;
             Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
             Messenger.Dispatch();
 
-            Instance.GetComponentInChildren<ChatBubble>().Text = "Going to defend " + _flag.name;
+            Instance.GetComponentInChildren<ChatBubble>().Text = "Going to defend " + Flag.name;
 
-            AddSubGoal(new WaitAtFlagTillCaptured(_flag));
-            AddSubGoal(new FollowPath(_flag.transform.position));
+            AddSubGoal(new WaitAtFlagTillCaptured(Flag));
+            AddSubGoal(new FollowPath(Flag.transform.position));
         }
 
         public override STATUS Process()
@@ -41,9 +41,14 @@ namespace Assets.Scripts.Goals
             return true;
         }
 
-        public override int CompareTo(object obj)
+        public override bool IsSameGoal(Goal goal)
         {
-            return ((DefendFlag)obj)._flag == _flag ? 0 : 1;
+            if (goal is DefendFlag)
+            {
+                return Flag == ((DefendFlag)goal).Flag;
+            }
+
+            return base.IsSameGoal(goal);
         }
     }
 }

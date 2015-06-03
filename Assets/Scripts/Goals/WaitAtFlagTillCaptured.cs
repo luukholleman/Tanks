@@ -6,7 +6,7 @@ namespace Assets.Scripts.Goals
 {
     class WaitAtFlagTillCaptured : Goal
     {
-        private GameObject _flag;
+        public readonly GameObject Flag;
 
         private SteeringBehaviour _steeringBehaviour;
 
@@ -14,7 +14,7 @@ namespace Assets.Scripts.Goals
 
         public WaitAtFlagTillCaptured(GameObject flag)
         {
-            _flag = flag;
+            Flag = flag;
         }
 
         public override void Activate()
@@ -37,7 +37,7 @@ namespace Assets.Scripts.Goals
 
         public override void Terminate()
         {
-            Debug.Log("Flag " + _flag + " is captured");
+            Debug.Log("Flag " + Flag + " is captured");
         }
 
         public override bool HandleMessage()
@@ -45,9 +45,14 @@ namespace Assets.Scripts.Goals
             return true;
         }
 
-        public override int CompareTo(object obj)
+        public override bool IsSameGoal(Goal goal)
         {
-            return ((WaitAtFlagTillCaptured)obj)._flag == _flag ? 0 : 1;
+            if (goal is WaitAtFlagTillCaptured)
+            {
+                return Flag == ((WaitAtFlagTillCaptured)goal).Flag;
+            }
+
+            return base.IsSameGoal(goal);
         }
     }
 }

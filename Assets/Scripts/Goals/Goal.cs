@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Goals
 {
-    internal abstract class Goal : IComparable
+    internal abstract class Goal
     {
         public GameObject Instance;
 
@@ -88,6 +88,9 @@ namespace Assets.Scripts.Goals
             return status;
         }
 
-        public abstract int CompareTo(object obj);
+        public virtual bool IsSameGoal(Goal goal)
+        {
+            return false;
+        }
     }
 }

@@ -5,29 +5,29 @@ namespace Assets.Scripts.Goals
 {
     class GetPowerUp : Goal
     {
-        private GameObject _powerUp;
+        public readonly GameObject PowerUp;
 
         public GetPowerUp(GameObject powerUp)
         {
-            _powerUp = powerUp;
+            PowerUp = powerUp;
         }
 
         public override void Activate()
         {
             Instance.GetComponentInChildren<ChatBubble>().Text = "Getting this powerup";
 
-            if (_powerUp == null)
+            if (PowerUp == null)
             {
                 SetStatus(STATUS.FAILED);
                 return;
             }   
 
-            AddSubGoal(new FollowPath(_powerUp.transform.position));
+            AddSubGoal(new FollowPath(PowerUp.transform.position));
         }
 
         public override STATUS Process()
         {
-            if (_powerUp == null)
+            if (PowerUp == null)
             {
                 return SetStatus(STATUS.FAILED);
             }
@@ -45,9 +45,14 @@ namespace Assets.Scripts.Goals
             return true;
         }
 
-        public override int CompareTo(object obj)
+        public override bool IsSameGoal(Goal goal)
         {
-            return ((GetPowerUp)obj)._powerUp == _powerUp ? 0 : 1;
+            if (goal is GetPowerUp)
+            {
+                return PowerUp == ((GetPowerUp)goal).PowerUp;
+            }
+
+            return base.IsSameGoal(goal);
         }
     }
 }

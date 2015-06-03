@@ -71,9 +71,7 @@ namespace Assets.Scripts.Goals
 
                 Goal newGoal = bestEvaluator.GetGoal();
 
-                //|| (SubGoals.Any() && SubGoals.Peek() != newGoal)
-                if ((SubGoals.Any() && SubGoals.Peek().GetType() != newGoal.GetType()) || !SubGoals.Any())
-                //if ((SubGoals.Any() && SubGoals.Peek().CompareTo(newGoal) != 0) || !SubGoals.Any())
+                if ((SubGoals.Any() && !SubGoals.Peek().IsSameGoal(newGoal)) || !SubGoals.Any())
                 {
                     RemoveAllSubGoals();
                     AddSubGoal(newGoal);
@@ -93,11 +91,6 @@ namespace Assets.Scripts.Goals
         public override bool HandleMessage()
         {
             return true;
-        }
-
-        public override int CompareTo(object obj)
-        {
-            return 0;
         }
     }
 }

@@ -11,7 +11,7 @@ namespace Assets.Scripts.Goals
 {
     class Flee : Goal
     {
-        private GameObject _tank;
+        public readonly GameObject Tank;
 
         private SteeringBehaviour _steeringBehaviour;
 
@@ -19,7 +19,7 @@ namespace Assets.Scripts.Goals
 
         public Flee(GameObject tank)
         {
-            _tank = tank;
+            Tank = tank;
         }
 
         public override void Activate()
@@ -40,12 +40,12 @@ namespace Assets.Scripts.Goals
 
         public override STATUS Process()
         {
-            if (_tank == null)
+            if (Tank == null)
                 return SetStatus(STATUS.COMPLETED);
 
             Vector2 steeringForce = Vector2.zero;
 
-            steeringForce += _steeringBehaviour.Flee(_tank.transform.position);
+            steeringForce += _steeringBehaviour.Flee(Tank.transform.position);
             steeringForce += _steeringBehaviour.ObstacleAvoidance(Physics2D.OverlapCircleAll(Instance.transform.position, 10f, LayerMask.GetMask("Obstacle")));
 
             _rigidbody.AddForce(steeringForce * 2f);
@@ -63,9 +63,14 @@ namespace Assets.Scripts.Goals
             return true;
         }
 
-        public override int CompareTo(object obj)
+        public override bool IsSameGoal(Goal goal)
         {
-            return ((Flee)obj)._tank == _tank ? 0 : 1;
+            if (goal is Flee)
+            {
+                return Tank == ((Flee)goal).Tank;
+            }
+
+            return base.IsSameGoal(goal);
         }
     }
 }

@@ -9,7 +9,7 @@ namespace Assets.Scripts.Goals
 {
     class WaitAtFlag : Goal
     {
-        private GameObject _flag;
+        public readonly GameObject Flag;
 
         private SteeringBehaviour _steeringBehaviour;
 
@@ -17,12 +17,12 @@ namespace Assets.Scripts.Goals
 
         public WaitAtFlag(GameObject flag)
         {
-            _flag = flag;
+            Flag = flag;
         }
 
         public override void Activate()
         {
-            String msg = "Holding " + _flag.name;
+            String msg = "Holding " + Flag.name;
             Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
             Messenger.Dispatch();
 
@@ -37,11 +37,11 @@ namespace Assets.Scripts.Goals
         {
             _rigidbody.velocity = new Vector2(0, 0);
 
-            if (Vector2.Distance(Instance.transform.position, _flag.transform.position) > _flag.GetComponent<Flag>().CappingRange)
+            if (Vector2.Distance(Instance.transform.position, Flag.transform.position) > Flag.GetComponent<Flag>().CappingRange)
             {
                 // somehow we got out of the range of the flag (probably shot out), we need to get back in range
                 if ((SubGoals.Any() && SubGoals.Peek().GetType() != typeof(CaptureFlag)) || !SubGoals.Any())
-                    AddSubGoal(new CaptureFlag(_flag));
+                    AddSubGoal(new CaptureFlag(Flag));
 
                 return ProcessSubGoals();
             }
@@ -59,9 +59,14 @@ namespace Assets.Scripts.Goals
             return true;
         }
 
-        public override int CompareTo(object obj)
+        public override bool IsSameGoal(Goal goal)
         {
-            return ((WaitAtFlag)obj)._flag == _flag ? 0 : 1;
+            if (goal is WaitAtFlag)
+            {
+                return Flag == ((WaitAtFlag)goal).Flag;
+            }
+
+            return base.IsSameGoal(goal);
         }
     }
 }

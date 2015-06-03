@@ -72,9 +72,14 @@ namespace Assets.Scripts.Goals
             return true;
         }
 
-        public override int CompareTo(object obj)
+        public override bool IsSameGoal(Goal goal)
         {
-            return ((Attack)obj).Target == Target ? 0 : 1;
+            if (goal is Attack)
+            {
+                return Target == ((Attack) goal).Target;
+            }
+
+            return base.IsSameGoal(goal);
         }
     }
 }

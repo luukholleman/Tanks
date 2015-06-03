@@ -7,30 +7,30 @@ namespace Assets.Scripts.Goals
 {
     class CaptureFlag : Goal
     {
-        private GameObject _flag;
+        public readonly GameObject Flag;
 
         public CaptureFlag(GameObject flag)
         {
-            _flag = flag;
+            Flag = flag;
         }
 
         public override void Activate()
         {
-            String msg = "Going to attack " + _flag.name;
+            String msg = "Going to attack " + Flag.name;
 
             Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
 
             Messenger.Dispatch();
 
-            Instance.GetComponentInChildren<ChatBubble>().Text = "Going to capture " + _flag.name;
+            Instance.GetComponentInChildren<ChatBubble>().Text = "Going to capture " + Flag.name;
 
-            AddSubGoal(new WaitAtFlagTillCaptured(_flag));
-            AddSubGoal(new FollowPath(_flag.transform.position));
+            AddSubGoal(new WaitAtFlagTillCaptured(Flag));
+            AddSubGoal(new FollowPath(Flag.transform.position));
         }
 
         public override STATUS Process()
         {
-            if (_flag.GetComponent<Flag>().Side == Instance.GetComponent<Vehicle>().Side && Math.Abs(_flag.GetComponent<Flag>().Score) == _flag.GetComponent<Flag>().MaxScore)
+            if (Flag.GetComponent<Flag>().Side == Instance.GetComponent<Vehicle>().Side && Math.Abs(Flag.GetComponent<Flag>().Score) == Flag.GetComponent<Flag>().MaxScore)
             {
                 return SetStatus(STATUS.COMPLETED);
             }
@@ -48,9 +48,14 @@ namespace Assets.Scripts.Goals
             return true;
         }
 
-        public override int CompareTo(object obj)
+        public override bool IsSameGoal(Goal goal)
         {
-            return ((CaptureFlag)obj)._flag == _flag ? 0 : 1;
+            if (goal is CaptureFlag)
+            {
+                return Flag == ((CaptureFlag)goal).Flag;
+            }
+
+            return base.IsSameGoal(goal);
         }
     }
 }
