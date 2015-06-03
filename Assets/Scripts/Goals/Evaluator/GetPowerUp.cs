@@ -1,4 +1,7 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Goals.Fuzzy;
+using Assets.Scripts.Goals.Fuzzy.Operator;
+using Assets.Scripts.Goals.Fuzzy.Set;
+using UnityEngine;
 
 namespace Assets.Scripts.Goals.Evaluator
 {
@@ -34,30 +37,56 @@ namespace Assets.Scripts.Goals.Evaluator
 
         public float CalculateDesirabilityForPowerUp(GameObject powerUp)
         {
+            Module module = new Module();
 
-            float score = 0;
+            Variable distToTarget = module.CreateFLV("DistToPowerup");
 
-            Transform closest = null;
-            float dist = float.MaxValue;
+            Set close = distToTarget.Add("Powerup_Close", new LeftShoulder(0, 200, 200));
+            Set far = distToTarget.Add("Powerup_Far", new RightShoulder(0, 200, 200));
 
-            foreach (Transform tank in GameObject.Find("Tanks").transform)
-            {
-                float newDist = Vector2.Distance(powerUp.transform.position, tank.position);
+            Variable desirability = module.CreateFLV("Desirability");
+            Set desirable = desirability.Add("Desirable", new RightShoulder(0, 95, 95));
+            Set undesirable = desirability.Add("Undesirable", new LeftShoulder(0, 0, 95));
 
-                if (newDist < dist)
-                {
-                    dist = newDist;
-                    closest = tank;
-                }
-            }
+            float dist = Vector2.Distance(Instance.transform.position, powerUp.transform.position);
 
-            // if we're the closest, get it
-            if (closest == Instance.transform)
-            {
-                score = 100;
-            }
+            module["DistToPowerup"].Fuzzify(dist);
 
-            return score;
+            // close && enemies seems like a dumb move and it actually is, but tanks cant know how much enemies there are
+            module.Add(close, desirable.Very());
+
+            module.Add(far, undesirable);
+
+            float crisp = module.Defuzzify("Desirability");
+
+            //Debug.Log(dist + ", " + ratio + ", " + crisp);
+
+            return crisp;
+
+
+            //float score = 0;
+
+            //Transform closest = null;
+            //float dist = float.MaxValue;
+
+            //foreach (Transform tank in GameObject.Find("Tanks").transform)
+            //{
+            //    float newDist = Vector2.Distance(powerUp.transform.position, tank.position);
+
+            //    if (newDist < dist)
+            //    {
+            //        dist = newDist;
+            //        closest = tank;
+            //    }
+            //}
+
+            //// if we're the closest, get it
+            //if (closest == Instance.transform)
+            //{
+            //    score = 100;
+            //}
+
+            //return score;
         }
 
         public override Goal GetGoal()
