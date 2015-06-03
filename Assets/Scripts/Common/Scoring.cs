@@ -53,8 +53,8 @@ public class Scoring : MonoBehaviour {
             }
         }
 
-        blueScore += CalcScore(blue) * Time.fixedDeltaTime;
-        redScore += CalcScore(red) * Time.fixedDeltaTime;
+        blueScore += CalcScore(blue) * Time.deltaTime;
+        redScore += CalcScore(red) * Time.deltaTime;
 
         if (blueScore > WinningScore)
             Time.timeScale = 0;

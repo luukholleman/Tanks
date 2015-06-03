@@ -49,11 +49,11 @@ public class Flag : MonoBehaviour
 
             if (tank.GetComponent<Vehicle>().Side == Player.Side.Blue)
             {
-                Score += ScorePerTank * Time.fixedDeltaTime;
+                Score += ScorePerTank * Time.deltaTime;
             }
             else if (tank.GetComponent<Vehicle>().Side == Player.Side.Red)
             {
-                Score -= ScorePerTank * Time.fixedDeltaTime;
+                Score -= ScorePerTank * Time.deltaTime;
             }
         }
 
