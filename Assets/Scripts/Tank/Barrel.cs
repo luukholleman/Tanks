@@ -7,9 +7,13 @@ using Assets.Scripts.Tank;
 
 public class Barrel : MonoBehaviour {
     
-    private float _lastShot = 0;
+    private float _lastShot;
 
     public float Damage;
+
+    public float RangeFromFlagMultiplier;
+
+    public float Multiplier;
 
 	// Use this for initialization
 	void Start () {
@@ -66,7 +70,23 @@ public class Barrel : MonoBehaviour {
                 rocket.GetComponent<Rigidbody2D>().AddRelativeForce(new Vector2(0, 5000));
 
                 rocket.GetComponent<Rocket>().Side = GetComponentInParent<Vehicle>().Side;
+
+                Collider2D[] flags = Physics2D.OverlapCircleAll(transform.position, RangeFromFlagMultiplier, LayerMask.GetMask("Flag"));
+                bool inRange = false;
+                foreach (Collider2D flag in flags)
+                {
+                    if (flag.GetComponent<Flag>().Side == GetComponentInParent<Vehicle>().Side)
+                    {
+                        inRange = true;
+                        break;
+                    }
+                }
+
                 rocket.GetComponent<Rocket>().Damage = Damage;
+                if (inRange)
+                {
+                    rocket.GetComponent<Rocket>().Damage = Damage * Multiplier;
+                }
 
                 _lastShot = Time.time;
             }
