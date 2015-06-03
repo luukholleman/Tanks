@@ -49,7 +49,8 @@ namespace Assets.Scripts.StateMachines
 
         void OnGUI()
         {
-            _currentState.OnGUI();
+            if (_currentState != null)
+                _currentState.OnGUI();
         }
 
         public void HandleMessage(Message msg)

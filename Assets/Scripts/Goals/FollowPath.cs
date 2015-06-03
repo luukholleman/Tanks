@@ -67,14 +67,28 @@ namespace Assets.Scripts.Goals
                 {
                     GraphNode last = null;
 
+                    Color color = new Color(Random.value, Random.value, Random.value);
+
                     foreach (GraphNode node in _aStar.Path)
                     {
                         if (last != null)
                         {
-                            lines.Add(Graph.Instance.DrawEdge(node, last, Color.red));
+                            lines.Add(Graph.Instance.DrawEdge(node, last, color));
                         }
 
                         last = node;
+                    }
+
+                    Color closedColor = new Color(Random.value, Random.value, Random.value);
+
+                    GraphNode lastClosed = null;
+
+                    foreach (int node in _aStar.Closed)
+                    {
+                        if (last != null)
+                        {
+                            lines.Add(Graph.Instance.DrawNode(Graph.Instance.GetNode(node), closedColor));
+                        }
                     }   
                 }
             }

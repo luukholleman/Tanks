@@ -52,9 +52,7 @@ namespace Assets.Scripts.Goals
             {
                 steeringForce += _steeringBehaviour.Pursuit(Target.transform.position, Target.GetComponent<Rigidbody2D>().velocity);
             }
-
-
-
+            
             steeringForce += _steeringBehaviour.ObstacleAvoidance(Physics2D.OverlapCircleAll(Instance.transform.position, 10f, LayerMask.GetMask("Obstacle")));
 
             _rigidbody.AddForce(steeringForce);

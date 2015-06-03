@@ -20,7 +20,7 @@ namespace Assets.Scripts.Tank
             //if (_exploded && !GetComponent<AudioSource>().isPlaying)
             if (_exploded)
             {
-                DestroyImmediate(gameObject);
+                GetComponent<SpriteRenderer>().enabled = false;
             }
         }
 

@@ -19,7 +19,7 @@ namespace Assets.Scripts.Pathfinding
 
         Dictionary<int, int> _previous = new Dictionary<int, int>();
         Dictionary<int, float> _distances = new Dictionary<int, float>();
-        List<int> closed = new List<int>();
+        public List<int> Closed = new List<int>();
         PriorityQueue<int> pq = new PriorityQueue<int>();
 
         int i = 0;
@@ -95,10 +95,10 @@ namespace Assets.Scripts.Pathfinding
                         _previous[neighbor.To] = smallest;
                     }
 
-                    if (!closed.Exists(n => n == neighbor.To))
+                    if (!Closed.Exists(n => n == neighbor.To))
                         pq.Enqueue(new PriorityQueueNode<int>(alt + distance, neighbor.To));
 
-                    closed.Add(neighbor.To);
+                    Closed.Add(neighbor.To);
                 }
 
                 if (++j >= _iterationsPerCall)
@@ -116,7 +116,7 @@ namespace Assets.Scripts.Pathfinding
         //    var previous = new Dictionary<int, int>();
         //    var distances = new Dictionary<int, float>();
         //    var nodes = new List<int>();
-        //    var closed = new List<int>();
+        //    var Closed = new List<int>();
 
         //    PriorityQueue<int> pq = new PriorityQueue<int>();
 
@@ -185,10 +185,10 @@ namespace Assets.Scripts.Pathfinding
         //                previous[neighbor.To] = smallest;
         //            }
 
-        //            if (!closed.Exists(n => n == neighbor.To))
+        //            if (!Closed.Exists(n => n == neighbor.To))
         //                pq.Enqueue(new PriorityQueueNode<int>(alt + distance, neighbor.To));
 
-        //            closed.Add(neighbor.To);
+        //            Closed.Add(neighbor.To);
         //        }
         //    }
 

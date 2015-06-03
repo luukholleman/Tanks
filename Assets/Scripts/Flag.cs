@@ -63,9 +63,9 @@ public class Flag : MonoBehaviour
         else if (Score < -MaxScore)
             Score = -MaxScore;
 
-        if(Score > 2)
+        if(Score > 8)
             Side = Player.Side.Blue;
-        else if (Score < -2)
+        else if (Score < -8)
             Side = Player.Side.Red;
         else
             Side = Player.Side.None;

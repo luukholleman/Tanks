@@ -91,7 +91,7 @@ namespace Assets.Scripts.Pathfinding
                             GraphNode neighbour = FloodFill(newPosition);
 
                             if (neighbour != null)
-                                node.Edges.Add(new GraphEdge(neighbour.Index, NodeDistance));
+                                node.Edges.Add(new GraphEdge(neighbour.Index, Vector2.Distance(node.Position, neighbour.Position)));
                         }
                     }
                 }
@@ -136,6 +136,18 @@ namespace Assets.Scripts.Pathfinding
             quadLine.GetComponent<Renderer>().material.color = color;
 
             return quadLine;
+        }
+        public GameObject DrawNode(GraphNode node, Color color)
+        {
+            GameObject parent = GameObject.Find("Common/Graph");
+
+            GameObject circle = Instantiate(Resources.Load<GameObject>("PreFabs/Circle"), node.Position, new Quaternion()) as GameObject;
+
+            circle.transform.parent = parent.transform;
+
+            circle.GetComponent<Renderer>().material.color = color;
+
+            return circle;
         }
 
         public static readonly int InvalidNodeIndex = -1;

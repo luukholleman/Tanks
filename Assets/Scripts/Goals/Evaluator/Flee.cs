@@ -65,21 +65,7 @@ namespace Assets.Scripts.Goals.Evaluator
             module["DistToTarget"].Fuzzify(dist);
             module["CurrentHealth"].Fuzzify(myHealth);
             module["TargetHealth"].Fuzzify(tarHealth);
-
-            //module.Add(close && lowHealth && tarLowHealth, desirable.Fairly());
-            //module.Add(close && lowHealth && tarMidHealth, desirable);
-            //module.Add(close && lowHealth && tarHighHealth, desirable.Very());
-            //module.Add(close && midHealth && tarLowHealth, undesirable);
-            //module.Add(close && midHealth && tarMidHealth, desirable.Very());
-            //module.Add(close && midHealth && tarHighHealth, desirable);
-            //module.Add(close && highHealth && tarLowHealth, undesirable.Fairly());
-            //module.Add(close && highHealth && tarMidHealth, undesirable.Very());
-            //module.Add(close && highHealth && tarHighHealth, undesirable);
-
-            //// don't engage in far combat except when you can win for sure
-            //module.Add(far, undesirable.Very());
-            //module.Add(far && highHealth.Very() && tarLowHealth.Fairly(), undesirable);
-
+            
             module.Add(close && lowHealth && tarLowHealth, desirable.Fairly());
             module.Add(close && lowHealth && (tarMidHealth || tarHighHealth), desirable.Very());
 
