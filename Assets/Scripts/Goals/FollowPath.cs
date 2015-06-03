@@ -79,15 +79,13 @@ namespace Assets.Scripts.Goals
                         last = node;
                     }
 
-                    Color closedColor = new Color(Random.value, Random.value, Random.value);
-
                     GraphNode lastClosed = null;
 
                     foreach (int node in _aStar.Closed)
                     {
                         if (last != null)
                         {
-                            lines.Add(Graph.Instance.DrawNode(Graph.Instance.GetNode(node), closedColor));
+                            lines.Add(Graph.Instance.DrawNode(Graph.Instance.GetNode(node), color));
                         }
                     }   
                 }

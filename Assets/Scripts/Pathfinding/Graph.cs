@@ -141,7 +141,7 @@ namespace Assets.Scripts.Pathfinding
         {
             GameObject parent = GameObject.Find("Common/Graph");
 
-            GameObject circle = Instantiate(Resources.Load<GameObject>("PreFabs/Circle"), node.Position, new Quaternion()) as GameObject;
+            GameObject circle = Instantiate(Resources.Load<GameObject>("PreFabs/Line"), node.Position, new Quaternion()) as GameObject;
 
             circle.transform.parent = parent.transform;
 
