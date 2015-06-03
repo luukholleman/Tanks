@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.Remoting.Messaging;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -21,7 +20,7 @@ namespace Assets.Scripts
 
         private Rigidbody2D rigidbody;
 
-        private global::Assets.Scripts.Tank.Tank _tank;
+        private Tank.Tank _tank;
 
         private Vector2 wanderTarget = new Vector2(0, 0);
 
@@ -31,7 +30,7 @@ namespace Assets.Scripts
 
             rigidbody = Instance.GetComponent<Rigidbody2D>();
 
-            _tank = Instance.GetComponent<global::Assets.Scripts.Tank.Tank>();
+            _tank = Instance.GetComponent<Tank.Tank>();
         }
 
         public Vector2 Seek(Vector2 targetPos)
@@ -97,7 +96,7 @@ namespace Assets.Scripts
         {
             float mag = instance.GetComponent<Rigidbody2D>().velocity.magnitude;
 
-            float maxSpeed = instance.GetComponent<global::Assets.Scripts.Tank.Tank>().MaxSpeed;
+            float maxSpeed = instance.GetComponent<Tank.Tank>().MaxSpeed;
 
             float y = MinBoxLength +
                       (mag / maxSpeed) *
@@ -109,60 +108,6 @@ namespace Assets.Scripts
             vectors[1] = instance.transform.TransformPoint(new Vector2(0.8f, y));
 
             return vectors;
-        }
-
-        public Vector2 ObstaclesAvoidance(Collider2D[] colliders)
-        {
-
-            GameObject closestObstacle = null;
-
-            const float maxFloat = float.MaxValue;
-
-            float distClosestIp = maxFloat;
-
-            List<GameObject> gos = new List<GameObject>();
-
-            foreach (Collider2D collider in colliders)
-            {
-                Vector2 localPos = Instance.transform.InverseTransformPoint(collider.gameObject.transform.position);
-
-                if (localPos.y >= 0)
-                {
-                    if (collider.gameObject.GetComponent<CircleCollider2D>() == null)
-                        continue;
-
-                    float expandedRadius = collider.gameObject.GetComponent<CircleCollider2D>().radius + Instance.GetComponent<BoxCollider2D>().size.x / 2;
-
-                    if (Mathf.Abs(localPos.x) < expandedRadius)
-                    {
-                        gos.Add(collider.gameObject);
-                    }
-                }
-            }
-
-            Vector2 steeringForce = Vector2.zero;
-
-            foreach (GameObject gameObject in gos)
-            {
-                Vector2 localPosOfClosestObstacle = Instance.transform.TransformPoint(gameObject.transform.position);
-
-                float multiplier = 2f + (MinBoxLength - localPosOfClosestObstacle.y) / MinBoxLength;
-
-                steeringForce.x += (gameObject.GetComponent<CircleCollider2D>().radius - localPosOfClosestObstacle.x) *
-                                  multiplier;
-
-                float brakingWeight = 0.2f;
-
-                steeringForce.y += (gameObject.GetComponent<CircleCollider2D>().radius - localPosOfClosestObstacle.y) *
-                                  brakingWeight;
-            }
-
-            // transform to worldvector velocity
-            steeringForce = Instance.transform.TransformVector(steeringForce);
-
-            steeringForce.Normalize();
-
-            return steeringForce;
         }
 
         public Vector2 ObstacleAvoidance(Collider2D[] colliders)

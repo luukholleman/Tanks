@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.StateMachines;
-using Assets.Scripts.StateMachines.Base;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -20,22 +18,9 @@ namespace Assets.Scripts
 
                 newTank.transform.parent = GameObject.Find("Tanks").transform;
 
-                ////AStar dijkstra = new AStar(Graph.Instance, Graph.Instance.GetNode((Vector2)newTank.transform.position).Index, (int)(Random.value * 2000));
-                //AStar dijkstra = new AStar(Graph.Instance, Graph.Instance.GetNode(newTank.transform.position).Index, (int)(Random.value * Graph.Instance.NodeCount));
-
-                ////dijkstra.Path.Reverse();
-
-                //newTank.GetComponent<StateMachine>().CurrentState = new FollowPath(dijkstra.Path);
-                //newTank.GetComponent<StateMachine>().CurrentState = new PatrolState();
-
-                newTank.GetComponent<global::Assets.Scripts.Tank.Tank>().Side = Side;
+                newTank.GetComponent<Tank.Tank>().Side = Side;
 
             }
-        }
-	
-        // Update is called once per frame
-        void Update () {
-	
         }
     }
 }
