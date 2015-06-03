@@ -1,27 +1,71 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Assets.Scripts.StateMachines.Messaging;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.StateMachines.Base
 {
     public class IdleState : IState
     {
-        private List<float> _spawnTimings = new List<float>(); 
+        public Dictionary<float, Vector3> Spawns = new Dictionary<float, Vector3>(); 
+        //private List<float> _spawnTimings = new List<float>(); 
     
         public override void Update(GameObject instance)
         {
-            foreach (float f in _spawnTimings.Where(t => t < Time.timeSinceLevelLoad))
+            List<float> toRemove = new List<float>();
+            foreach (KeyValuePair<float, Vector3> pair in Spawns.Where(t => t.Key < Time.timeSinceLevelLoad))
             {
                 GameObject tank = Resources.Load<GameObject>("PreFabs/Tank");
 
-                GameObject newTank = GameObject.Instantiate(tank, instance.transform.position, new Quaternion()) as GameObject;
+                GameObject closestFlag = FindClosestFlag(pair.Value);
 
+                GameObject newTank = GameObject.Instantiate(tank, closestFlag.transform.position + new Vector3(Random.value, Random.value, 0).normalized, new Quaternion()) as GameObject;
+                
                 newTank.transform.parent = GameObject.Find("Tanks").transform;
                 newTank.GetComponent<Vehicle>().Side = instance.GetComponent<Spawn>().Side;
+
+                toRemove.Add(pair.Key);
             }
 
-            _spawnTimings.RemoveAll(t => t < Time.timeSinceLevelLoad);
+            foreach (float f in toRemove)
+            {
+                Spawns.Remove(f);
+            }
+            //foreach (float f in _spawnTimings.Where(t => t < Time.timeSinceLevelLoad))
+            //{
+            //    GameObject tank = Resources.Load<GameObject>("PreFabs/Tank");
+
+            //    GameObject newTank = GameObject.Instantiate(tank, instance.transform.position, new Quaternion()) as GameObject;
+
+            //    newTank.transform.parent = GameObject.Find("Tanks").transform;
+            //    newTank.GetComponent<Vehicle>().Side = instance.GetComponent<Spawn>().Side;
+            //}
+
+            //_spawnTimings.RemoveAll(t => t < Time.timeSinceLevelLoad);
+        }
+
+        public GameObject FindClosestFlag(Vector3 pos)
+        {
+            GameObject closest = null;
+            float dist = float.MaxValue;
+
+            foreach (Transform transform in GameObject.Find("Flags").transform)
+            {
+                float newDist = Vector3.Distance(pos, transform.position);
+                if (newDist < dist && transform.GetComponent<Flag>().Side == Instance.GetComponent<Spawn>().Side)
+                {
+                    closest = transform.gameObject;
+                    dist = newDist;
+                }
+            }
+
+            // if all flags are of the enemy, spawn on the base
+            if (closest == null)
+                closest = Instance.gameObject;
+
+            return closest;
         }
 
         public override void Enter(GameObject instance)
@@ -39,7 +83,21 @@ namespace Assets.Scripts.StateMachines.Base
             if (msg.Msg == Message.MessageType.TankDied)
             {
                 if (msg.Sender.GetComponent<Vehicle>().Side == instance.GetComponent<Spawn>().Side)
-                    _spawnTimings.Add(Time.timeSinceLevelLoad + Settings.Instance.TankSpawnDelay);
+                {
+                    int i = 0;
+                    while (true)
+                    {
+                        try
+                        {
+                            Spawns.Add(Time.timeSinceLevelLoad + Settings.Instance.TankSpawnDelay + i, msg.Sender.transform.position);
+                            break;
+                        }
+                        catch (ArgumentException)
+                        {
+                            i++;
+                        }
+                    }
+                }
             }
         }
     }
