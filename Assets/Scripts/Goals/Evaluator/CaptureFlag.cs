@@ -42,7 +42,7 @@ namespace Assets.Scripts.Goals.Evaluator
             Set close = distToTarget.Add("Flag_Close", new LeftShoulder(0, 200, 200));
             Set far = distToTarget.Add("Flag_Far", new RightShoulder(0, 200, 200));
 
-            Variable enemyAllyRatio = module.CreateFLV("EnemyAllyRatio");
+            Variable enemyAllyRatio = module.CreateFLV("AllyCount");
             Set enemies = enemyAllyRatio.Add("Enemies", new LeftShoulder(-15, -2, 0));
             Set neutral = enemyAllyRatio.Add("Neutral", new Triangle(-2, 0, 2f));
             Set allies = enemyAllyRatio.Add("Allies", new RightShoulder(0, 2, 15));
@@ -61,10 +61,10 @@ namespace Assets.Scripts.Goals.Evaluator
             foreach (Collider2D tank in tanks)
                 ratio += (tank.GetComponent<Vehicle>().Side == Instance.GetComponent<Vehicle>().Side) ? 1 : -1;
 
-            module["EnemyAllyRatio"].Fuzzify(ratio);
+            module["AllyCount"].Fuzzify(ratio);
 
-            module.Add(close && enemies, undesirable.Fairly());
-            module.Add(close && neutral, desirable);
+            // close && enemies seems like a dumb move and it actually is, but tanks cant know how much enemies there are
+            module.Add(close && (enemies || neutral), desirable);
             module.Add(close && allies, desirable.Fairly());
 
             module.Add(far, undesirable.Very());
