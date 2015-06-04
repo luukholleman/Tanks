@@ -1,7 +1,6 @@
 ﻿using Assets.Scripts.Goals.Fuzzy;
 using Assets.Scripts.Goals.Fuzzy.Operator;
 using Assets.Scripts.Goals.Fuzzy.Set;
-using Assets.Scripts.Tank;
 using UnityEngine;
 
 namespace Assets.Scripts.Goals.Evaluator
@@ -32,7 +31,7 @@ namespace Assets.Scripts.Goals.Evaluator
         public float CalculateDesirabilityForFlag(GameObject flag)
         {
             // if the flag isnt ours, we can't even hold it
-            if (flag.GetComponent<Flag>().Side != Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side)
+            if (flag.GetComponent<Flag>().Side != Instance.GetComponent<Tank.Tank>().Side)
                 return 0;
 
             Module module = new Module();
@@ -54,7 +53,7 @@ namespace Assets.Scripts.Goals.Evaluator
             int allies = 0;
 
             foreach (Collider2D tank in tanks)
-                if (tank.GetComponent<global::Assets.Scripts.Tank.Tank>().Side == Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side)
+                if (tank.GetComponent<Tank.Tank>().Side == Instance.GetComponent<Tank.Tank>().Side)
                     allies++;
 
             module["HoldFlag"].Fuzzify(15 - allies);

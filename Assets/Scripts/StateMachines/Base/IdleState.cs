@@ -9,13 +9,13 @@ namespace Assets.Scripts.StateMachines.Base
 {
     public class IdleState : IState
     {
-        public Dictionary<float, Vector3> Spawns = new Dictionary<float, Vector3>(); 
-        //private List<float> _spawnTimings = new List<float>(); 
+        public Dictionary<float, Vector3> ToSpawn = new Dictionary<float, Vector3>();
     
         public override void Update(GameObject instance)
         {
-            List<float> toRemove = new List<float>();
-            foreach (KeyValuePair<float, Vector3> pair in Spawns.Where(t => t.Key < Time.timeSinceLevelLoad))
+            List<float> spawnedTanks = new List<float>();
+
+            foreach (KeyValuePair<float, Vector3> pair in ToSpawn.Where(t => t.Key < Time.timeSinceLevelLoad))
             {
                 GameObject tank = Resources.Load<GameObject>("PreFabs/Tank");
 
@@ -26,24 +26,10 @@ namespace Assets.Scripts.StateMachines.Base
                 newTank.transform.parent = GameObject.Find("Tanks").transform;
                 newTank.GetComponent<Tank.Tank>().Side = instance.GetComponent<Spawn>().Side;
 
-                toRemove.Add(pair.Key);
+                spawnedTanks.Add(pair.Key);
             }
 
-            foreach (float f in toRemove)
-            {
-                Spawns.Remove(f);
-            }
-            //foreach (float f in _spawnTimings.Where(t => t < Time.timeSinceLevelLoad))
-            //{
-            //    GameObject tank = Resources.Load<GameObject>("PreFabs/Tank");
-
-            //    GameObject newTank = GameObject.Instantiate(tank, instance.transform.position, new Quaternion()) as GameObject;
-
-            //    newTank.transform.parent = GameObject.Find("Tanks").transform;
-            //    newTank.GetComponent<Tank>().Side = instance.GetComponent<Spawn>().Side;
-            //}
-
-            //_spawnTimings.RemoveAll(t => t < Time.timeSinceLevelLoad);
+            foreach (float f in spawnedTanks) ToSpawn.Remove(f);
         }
 
         public GameObject FindClosestFlag(Vector3 pos)
@@ -106,7 +92,7 @@ namespace Assets.Scripts.StateMachines.Base
                     {
                         try
                         {
-                            Spawns.Add(Time.timeSinceLevelLoad + Settings.Instance.TankSpawnDelay + i, msg.Sender.transform.position);
+                            ToSpawn.Add(Time.timeSinceLevelLoad + Settings.Instance.TankSpawnDelay + i, msg.Sender.transform.position);
                             break;
                         }
                         catch (ArgumentException)

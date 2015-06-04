@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using Assets.Scripts.StateMachines.Messaging;
-using Assets.Scripts.Tank;
 using UnityEngine;
 
 namespace Assets.Scripts.StateMachines.Chat

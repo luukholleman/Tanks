@@ -1,19 +1,17 @@
-﻿using UnityEngine;
-using System.Collections;
-using Assets.Scripts;
+﻿using Assets.Scripts;
+using UnityEngine;
 
 [RequireComponent(typeof(SpriteRenderer))]
 public class Explosion : MonoBehaviour
 {
-
     public Player.Side Side;
 
-	// Use this for initialization
 	void Start ()
 	{
 	    int explosion = (int) (Random.value*6);
 
 	    string color;
+
 	    if (Side == Player.Side.Blue)
 	        color = "Blue";
 	    else
@@ -24,9 +22,9 @@ public class Explosion : MonoBehaviour
         Destroy(gameObject, 10f); // lifetime of 10 seconds
 	}
 	
-	// Update is called once per frame
-	void Update () {
-
+	void Update ()
+    {
+        // fade the smoke out
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, GetComponent<SpriteRenderer>().color.a - 0.5f * Time.deltaTime);
 	}
 }

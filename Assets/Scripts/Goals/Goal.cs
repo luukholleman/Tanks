@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using UnityEngine;
 
 namespace Assets.Scripts.Goals
@@ -12,10 +10,10 @@ namespace Assets.Scripts.Goals
 
         public Stack<Goal> SubGoals = new Stack<Goal>(); 
         public enum STATUS {
-            INACTIVE,
-            ACTIVE,
-            COMPLETED,
-            FAILED
+            Inactive,
+            Active,
+            Completed,
+            Failed
         }
 
         public STATUS Status;
@@ -23,12 +21,15 @@ namespace Assets.Scripts.Goals
         public abstract void Activate();
         public abstract STATUS Process();
         public abstract void Terminate();
-        public abstract bool HandleMessage();
+        public virtual bool HandleMessage()
+        {
+            return true;
+        }
 
         public void AddSubGoal(Goal subGoal)
         {
             if(SubGoals.Any())
-                SubGoals.Peek().SetStatus(STATUS.INACTIVE);
+                SubGoals.Peek().SetStatus(STATUS.Inactive);
 
             SubGoals.Push(subGoal);
 
@@ -42,7 +43,7 @@ namespace Assets.Scripts.Goals
 
         public STATUS ProcessSubGoals()
         {
-            while (SubGoals.Any() && (SubGoals.Peek().Status == STATUS.COMPLETED || SubGoals.Peek().Status == STATUS.FAILED))
+            while (SubGoals.Any() && (SubGoals.Peek().Status == STATUS.Completed || SubGoals.Peek().Status == STATUS.Failed))
             {
                 Goal goal = SubGoals.Pop();
 
@@ -53,23 +54,23 @@ namespace Assets.Scripts.Goals
             {
                 Goal subGoal = SubGoals.Peek();
 
-                if (subGoal.Status == STATUS.INACTIVE)
+                if (subGoal.Status == STATUS.Inactive)
                 {
                     subGoal.Activate();
-                    subGoal.Status = STATUS.ACTIVE;
+                    subGoal.Status = STATUS.Active;
                 }
 
                 STATUS status = subGoal.Process();
 
-                if (status == STATUS.COMPLETED && subGoal.SubGoals.Any())
+                if (status == STATUS.Completed && subGoal.SubGoals.Any())
                 {
-                    return STATUS.ACTIVE;
+                    return STATUS.Active;
                 }
 
                 return status;
             }
 
-            return STATUS.COMPLETED;
+            return STATUS.Completed;
         }
 
         public void RemoveAllSubGoals()

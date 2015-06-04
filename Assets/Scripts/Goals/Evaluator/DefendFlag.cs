@@ -31,7 +31,7 @@ namespace Assets.Scripts.Goals.Evaluator
         public float CalculateDesirabilityForFlag(GameObject flag)
         {
             //if (flag.GetComponent<Flag>().Side == Player.Opposite(Instance.GetComponent<Tank>().Side))
-            if (flag.GetComponent<Flag>().Side != Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side)
+            if (flag.GetComponent<Flag>().Side != Instance.GetComponent<Tank.Tank>().Side)
                 return 0;
 
             Collider2D[] tanks = Physics2D.OverlapCircleAll(flag.transform.position, flag.GetComponent<Flag>().CappingRange, LayerMask.GetMask("Tank"));
@@ -39,7 +39,7 @@ namespace Assets.Scripts.Goals.Evaluator
             bool enemy = false;
 
             foreach (Collider2D tank in tanks)
-                if (tank.GetComponent<global::Assets.Scripts.Tank.Tank>().Side != Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side)
+                if (tank.GetComponent<Tank.Tank>().Side != Instance.GetComponent<Tank.Tank>().Side)
                 {
                     enemy = true;
                     break;
@@ -70,43 +70,6 @@ namespace Assets.Scripts.Goals.Evaluator
             float crisp = module.Defuzzify("Desirability");
 
             return crisp;
-
-            //// we cant defend a flag that isn't ours
-            //if (flag.GetComponent<Flag>().Side == Player.Opposite(Instance.GetComponent<Tank>().Side))
-            //    return 0;
-
-            //Module module = new Module();
-
-            //Variable numOfAlliesAtFlag = module.CreateFLV("DefendFlag");
-            //Set noEnemies = numOfAlliesAtFlag.Add("Enemies_None", new LeftShoulder(0, 0, 15));
-            //Set someEnemies = numOfAlliesAtFlag.Add("Enemies_Some", new RightShoulder(0, 15, 15));
-
-            //Variable desirability = module.CreateFLV("Desirability");
-            //Set desirable = desirability.Add("Undesirable", new RightShoulder(25, 75, 100));
-            //Set undesirable = desirability.Add("Desirable", new LeftShoulder(0, 25, 75));
-
-            //module.Add(noEnemies, desirable);
-            //module.Add(someEnemies, undesirable);
-
-            //Collider2D[] tanks = Physics2D.OverlapCircleAll(flag.transform.position, flag.GetComponent<Flag>().CappingRange, LayerMask.GetMask("Tank"));
-
-            //int enemies = 0;
-
-            //foreach (Collider2D tank in tanks)
-            //    if (tank.GetComponent<Tank>().Side != Instance.GetComponent<Tank>().Side)
-            //        enemies++;
-
-            //// we can't defend if there are no enemies
-            //if (enemies == 0)
-            //    return 0;
-
-            //module["DefendFlag"].Fuzzify(enemies);
-
-            //float crisp = module.Defuzzify("Desirability");
-
-            //Debug.Log(enemies + ", " + crisp);
-            
-            //return crisp;
         }
 
         public override Goal GetGoal()

@@ -15,17 +15,12 @@ namespace Assets.Scripts.Goals
         {
             Instance.GetComponent<Rigidbody2D>().AddForce(_steeringBehaviour.Wander());
 
-            return SetStatus(STATUS.ACTIVE);
+            return SetStatus(STATUS.Active);
         }
 
         public override void Terminate()
         {
             
-        }
-
-        public override bool HandleMessage()
-        {
-            return true;
         }
     }
 }

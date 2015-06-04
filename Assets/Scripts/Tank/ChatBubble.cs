@@ -9,11 +9,6 @@ namespace Assets.Scripts.Tank
 
         public GUIStyle Style;
 
-        void Start()
-        {
-
-        }
-        
         void OnGUI()
         {
             if (Settings.DebugState)

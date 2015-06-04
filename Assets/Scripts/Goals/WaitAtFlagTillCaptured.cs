@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Goals
 {
@@ -28,7 +26,7 @@ namespace Assets.Scripts.Goals
         {
             _rigidbody.AddForce(_steeringBehaviour.Orbit(Flag.transform.position));
             
-            return SetStatus(STATUS.ACTIVE);
+            return SetStatus(STATUS.Active);
         }
 
         public override void Terminate()
@@ -37,11 +35,6 @@ namespace Assets.Scripts.Goals
             {
                 _rigidbody.velocity = Vector2.zero;
             }
-        }
-
-        public override bool HandleMessage()
-        {
-            return true;
         }
 
         public override bool IsSameGoal(Goal goal)

@@ -1,34 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using UnityEngine;
-using Debug = UnityEngine.Debug;
-using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.Pathfinding
 {
     class AStar
     {
         private readonly Graph _graph;
-
         public List<GraphNode> Path = new List<GraphNode>();
+        public List<int> Closed = new List<int>();
 
+        private readonly PriorityQueue Open = new PriorityQueue();
+        int _iterationCount;
+        private int _iterationsPerCall = 20;
+        private Stopwatch sw = new Stopwatch();
         private readonly int _target;
-
         private readonly int[] _previous;
         private readonly float[] _distances;
 
-        public List<int> Closed = new List<int>();
-        //PriorityQueue<int> Open = new PriorityQueue<int>();
-
-        readonly PriorityQueue Open = new PriorityQueue();
-
-        int _iterationCount;
-
-        private int _iterationsPerCall = 20;
-
-        Stopwatch sw = new Stopwatch();
         public AStar(Graph graph, int source, int target)
         {
             _graph = graph;
@@ -45,7 +34,6 @@ namespace Assets.Scripts.Pathfinding
                     _distances[vertex.Index] = float.MaxValue;
             }
 
-            // queue starting node
             Open.Enqueue(source, 0);
         }
 

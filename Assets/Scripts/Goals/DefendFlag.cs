@@ -35,12 +35,7 @@ namespace Assets.Scripts.Goals
         {
             
         }
-
-        public override bool HandleMessage()
-        {
-            return true;
-        }
-
+        
         public override bool IsSameGoal(Goal goal)
         {
             if (goal is DefendFlag)

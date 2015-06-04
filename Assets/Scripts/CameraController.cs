@@ -32,7 +32,7 @@ namespace Assets.Scripts
                 _drag = false;
             }
 
-            if (_drag == true)
+            if (_drag)
             {
                 Camera.main.transform.position = _origin - _diference;
             }

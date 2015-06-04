@@ -18,9 +18,9 @@ namespace Assets.Scripts.Goals
             Evaluators.Add(new Evaluator.DefendFlag());
             Evaluators.Add(new Evaluator.Attack());
             Evaluators.Add(new Evaluator.Flee());
+            //Evaluators.Add(new Evaluator.HoldFlag());
 
             _nextEvaluation = Time.timeSinceLevelLoad;
-            //Evaluators.Add(new Evaluator.HoldFlag());
         }
 
         public override void SetGameObject(GameObject gameObject)
@@ -35,20 +35,7 @@ namespace Assets.Scripts.Goals
 
         public override void Activate()
         {
-            //int rand = (int)(Random.value * 15);
 
-            //Debug.Log(rand);
-
-            //if (rand < 2)
-            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Stables")));
-            //else if (rand < 4)
-            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Farm")));
-            //else if (rand < 7)
-            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Gold Mine")));
-            //else if (rand < 10)
-            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Lumber Mill")));
-            //else if (rand < 15)
-            //    AddSubGoal(new CaptureFlag(GameObject.Find("Flags/Blacksmith")));
         }
         
         public override STATUS Process()
@@ -88,9 +75,5 @@ namespace Assets.Scripts.Goals
             
         }
 
-        public override bool HandleMessage()
-        {
-            return true;
-        }
     }
 }

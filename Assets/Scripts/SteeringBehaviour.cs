@@ -35,16 +35,14 @@ namespace Assets.Scripts
 
         public Vector2 Seek(Vector2 targetPos)
         {
-            Vector2 desiredVelocity = (targetPos - (Vector2)Instance.transform.position).normalized *
-                                      _tank.MaxSpeed;
+            Vector2 desiredVelocity = (targetPos - (Vector2)Instance.transform.position).normalized * _tank.MaxSpeed;
 
             return (desiredVelocity - _rigidbody.velocity);
         }
 
         public Vector2 Flee(Vector2 toEvade)
         {
-            Vector2 desiredVelocity = ((Vector2)Instance.transform.position - toEvade).normalized *
-                                      _tank.MaxSpeed;
+            Vector2 desiredVelocity = ((Vector2)Instance.transform.position - toEvade).normalized * _tank.MaxSpeed;
 
             return desiredVelocity - _rigidbody.velocity;
         }
@@ -88,7 +86,7 @@ namespace Assets.Scripts
             Vector2 targetLocal = _wanderTarget + new Vector2(0, wanderDistance);
 
             Vector2 targetWorld = Instance.transform.TransformPoint(targetLocal);
-            
+
             return Seek(targetWorld);
         }
 
@@ -101,7 +99,7 @@ namespace Assets.Scripts
             float y = MinBoxLength +
                       (mag / maxSpeed) *
                       MinBoxLength;
-            
+
             Vector2[] vectors = new Vector2[2];
 
             vectors[0] = Instance.transform.TransformPoint(new Vector2(-0.8f, -0.4f));
@@ -172,7 +170,6 @@ namespace Assets.Scripts
                                   brakingWeight;
             }
 
-            // transform to worldvector velocity
             steeringForce = Instance.transform.TransformVector(steeringForce);
 
             return steeringForce;

@@ -27,11 +27,9 @@ namespace Assets.Scripts.Goals
 
         public override STATUS Process()
         {
-            //Debug.Log("Process Go to Node " + _node.Position.x + ", " + _node.Position.y);
-
             if (Vector2.Distance(Instance.transform.position, _node.Position) < 1f)
             {
-                return SetStatus(STATUS.COMPLETED);
+                return SetStatus(STATUS.Completed);
             }
 
             Vector2 steeringForce = Vector2.zero;
@@ -50,23 +48,18 @@ namespace Assets.Scripts.Goals
             steeringForce += _steeringBehaviour.Cohesion(neighbours);
             steeringForce += _steeringBehaviour.Separation(neighbours);
 
-            steeringForce = steeringForce.normalized * Instance.transform.GetComponent<global::Assets.Scripts.Tank.Tank>().MaxSpeed;
+            steeringForce = steeringForce.normalized * Instance.transform.GetComponent<Tank.Tank>().MaxSpeed;
 
-            steeringForce += _steeringBehaviour.Seek(_node.Position)*Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().MaxSpeed;
+            steeringForce += _steeringBehaviour.Seek(_node.Position)*Instance.GetComponent<Tank.Tank>().MaxSpeed;
 
             _rigidbody.AddForce(steeringForce);
 
-            return SetStatus(STATUS.ACTIVE);
+            return SetStatus(STATUS.Active);
         }
 
         public override void Terminate()
         {
             
-        }
-
-        public override bool HandleMessage()
-        {
-            return true;
         }
 
     }

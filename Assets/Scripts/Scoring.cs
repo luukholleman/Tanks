@@ -14,7 +14,7 @@ namespace Assets.Scripts
         private GUIStyle blueWinStyle;
         private GUIStyle redWinStyle;
 
-        public int WinningScore;
+        public int WinningScore = 500;
 
         // Use this for initialization
         void Start()
@@ -42,11 +42,11 @@ namespace Assets.Scripts
             {
                 Flag f = flag.GetComponent<Flag>();
 
-                if(f.Side == Assets.Scripts.Player.Side.Blue)
+                if(f.Side == Player.Side.Blue)
                 {
                     blue++;
                 }
-                else if (f.Side == Assets.Scripts.Player.Side.Red)
+                else if (f.Side == Player.Side.Red)
                 {
                     red++;
                 }

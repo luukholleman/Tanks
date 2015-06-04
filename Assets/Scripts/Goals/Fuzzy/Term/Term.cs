@@ -1,6 +1,4 @@
 ﻿using System;
-using Assets.Scripts.Goals.Fuzzy.Operator;
-using Assets.Scripts.Goals.Fuzzy.Set;
 
 namespace Assets.Scripts.Goals.Fuzzy.Term
 {

@@ -1,20 +1,11 @@
-﻿using System;
+﻿using Assets.Scripts.Pathfinding;
 using UnityEngine;
-using System.Collections;
-using Assets.Scripts.Pathfinding;
 
 [RequireComponent(typeof(Graph))]
 public class GraphDrawer : MonoBehaviour
 {
-    private bool draw = false;
+    private bool draw;
     
-	// Use this for initialization
-	void Start ()
-	{
-
-	}
-	
-	// Update is called once per frame
 	void Update () {
 	    if(Input.GetKey(KeyCode.G))
 	    {

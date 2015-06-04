@@ -14,7 +14,31 @@ namespace Assets.Scripts.Pathfinding
 
         public bool Diagonal = true;
 
-        private List<Vector2> _closed = new List<Vector2>(); 
+        private List<Vector2> _closed = new List<Vector2>();
+
+        public static readonly int InvalidNodeIndex = -1;
+
+        private List<GraphNode> nodes = new List<GraphNode>();
+
+        public int NextIndex { get { return _nextIndex++; } }
+
+        private int _nextIndex;
+
+        public int NodeCount
+        {
+            get { return nodes.Count; }
+        }
+
+        public int ActiveNodeCount
+        {
+            get { return nodes.Count(n => n.Index != InvalidNodeIndex); }
+        }
+
+        public bool IsEmpty
+        {
+            get { return !nodes.Any(); }
+        }
+
 
         void Start()
         {
@@ -102,12 +126,9 @@ namespace Assets.Scripts.Pathfinding
             return null;
         }
 
-        void Update()
-        {
-        }
-
         public GameObject DrawEdge(GraphNode node1, GraphNode node2, Color color)
         {
+            // beware, ugly code
             GameObject parent = GameObject.Find("Common/Graph");
 
             GameObject quadLine =
@@ -137,8 +158,10 @@ namespace Assets.Scripts.Pathfinding
 
             return quadLine;
         }
+
         public GameObject DrawNode(GraphNode node, Color color)
         {
+            // beware, ugly code
             GameObject parent = GameObject.Find("Common/Graph");
 
             GameObject circle = Instantiate(Resources.Load<GameObject>("PreFabs/Line"), node.Position, new Quaternion()) as GameObject;
@@ -148,29 +171,6 @@ namespace Assets.Scripts.Pathfinding
             circle.GetComponent<Renderer>().material.color = color;
 
             return circle;
-        }
-
-        public static readonly int InvalidNodeIndex = -1;
-
-        private List<GraphNode> nodes = new List<GraphNode>();
-
-        public int NextIndex { get { return _nextIndex++; } }
-
-        private int _nextIndex = 0;
-
-        public int NodeCount
-        {
-            get { return nodes.Count; }
-        }
-
-        public int ActiveNodeCount
-        {
-            get { return nodes.Count(n => n.Index != InvalidNodeIndex); }
-        }
-
-        public bool IsEmpty
-        {
-            get { return !nodes.Any(); }
         }
 
         public GraphNode GetNode(int index)

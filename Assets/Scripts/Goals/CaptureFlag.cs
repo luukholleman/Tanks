@@ -30,9 +30,9 @@ namespace Assets.Scripts.Goals
 
         public override STATUS Process()
         {
-            if (Flag.GetComponent<Flag>().Side == Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side && Math.Abs(Flag.GetComponent<Flag>().Score) == Flag.GetComponent<Flag>().MaxScore)
+            if (Flag.GetComponent<Flag>().Side == Instance.GetComponent<Tank.Tank>().Side && Math.Abs(Flag.GetComponent<Flag>().Score) == Flag.GetComponent<Flag>().MaxScore)
             {
-                return SetStatus(STATUS.COMPLETED);
+                return SetStatus(STATUS.Completed);
             }
 
             return ProcessSubGoals();
@@ -42,12 +42,7 @@ namespace Assets.Scripts.Goals
         {
 
         }
-
-        public override bool HandleMessage()
-        {
-            return true;
-        }
-
+        
         public override bool IsSameGoal(Goal goal)
         {
             if (goal is CaptureFlag)

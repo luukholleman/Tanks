@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.Pathfinding;
-using Assets.Scripts.StateMachines.Messaging;
-using Assets.Scripts.Tank;
+﻿using Assets.Scripts.Tank;
 using UnityEngine;
 
 namespace Assets.Scripts.Goals
@@ -24,10 +18,6 @@ namespace Assets.Scripts.Goals
 
         public override void Activate()
         {
-            //String msg = "ATTACKING!!! GOING TO KILL SOMEONE";
-            //Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
-            //Messenger.Dispatch();
-
             Instance.GetComponentInChildren<ChatBubble>().Text = "Attacking " + Target.name;
 
             _steeringBehaviour = new SteeringBehaviour(Instance);
@@ -39,7 +29,7 @@ namespace Assets.Scripts.Goals
         public override STATUS Process()
         {
             if (Target == null)
-                return SetStatus(STATUS.COMPLETED);
+                return SetStatus(STATUS.Completed);
 
             Vector2 steeringForce = Vector2.zero;
 
@@ -56,17 +46,12 @@ namespace Assets.Scripts.Goals
 
             _rigidbody.AddForce(steeringForce);
 
-            return SetStatus(STATUS.ACTIVE);
+            return SetStatus(STATUS.Active);
         }
 
         public override void Terminate()
         {
             
-        }
-
-        public override bool HandleMessage()
-        {
-            return true;
         }
 
         public override bool IsSameGoal(Goal goal)

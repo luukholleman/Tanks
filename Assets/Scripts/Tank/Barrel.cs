@@ -1,26 +1,18 @@
-﻿using UnityEngine;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using Assets.Scripts.Goals;
 using Assets.Scripts.Tank;
+using UnityEngine;
 
 public class Barrel : MonoBehaviour {
     
     private float _lastShot;
 
-    public float Damage;
+    public float Damage = 20;
 
-    public float RangeFromFlagMultiplier;
+    public float RangeFromFlagMultiplier = 5;
 
-    public float Multiplier;
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
+    public float Multiplier = 1.3f;
+    
     void Update()
     {
         GameObject closestGameObject = null;
@@ -28,24 +20,6 @@ public class Barrel : MonoBehaviour {
         if (GetComponentInParent<GoalComponent>() != null && GetComponentInParent<GoalComponent>().Think.SubGoals.Any() && GetComponentInParent<GoalComponent>().Think.SubGoals.Peek().GetType() == typeof(Attack))
 	    {
             closestGameObject = ((Attack)GetComponentInParent<GoalComponent>().Think.SubGoals.Peek()).Target;
-	    }
-	    else
-        {
-            //Collider2D[] colliders = Physics2D.OverlapCircleAll(transform.position, 20, LayerMask.GetMask("Robot", "Tank"));
-
-            //float dist = float.MaxValue;
-
-            //foreach (Collider2D collider in colliders)
-            //{
-            //    if (collider.gameObject.GetComponent<Tank>().Side == GetComponentInParent<Tank>().Side)
-            //        continue;
-
-            //    if (Vector2.Distance(transform.position, collider.gameObject.transform.position) < dist && collider.GetComponent<Tank>().Side != GetComponentInParent<Tank>().Side)
-            //    {
-            //        closestGameObject = collider.gameObject;
-            //        dist = Vector2.Distance(collider.gameObject.transform.position, transform.position);
-            //    }
-            //}
 	    }
 
         if (closestGameObject != null)

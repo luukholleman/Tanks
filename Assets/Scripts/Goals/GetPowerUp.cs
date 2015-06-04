@@ -18,7 +18,7 @@ namespace Assets.Scripts.Goals
 
             if (PowerUp == null)
             {
-                SetStatus(STATUS.FAILED);
+                SetStatus(STATUS.Failed);
                 return;
             }   
 
@@ -29,7 +29,7 @@ namespace Assets.Scripts.Goals
         {
             if (PowerUp == null)
             {
-                return SetStatus(STATUS.FAILED);
+                return SetStatus(STATUS.Failed);
             }
 
             return ProcessSubGoals();   
@@ -38,11 +38,6 @@ namespace Assets.Scripts.Goals
         public override void Terminate()
         {
             
-        }
-
-        public override bool HandleMessage()
-        {
-            return true;
         }
 
         public override bool IsSameGoal(Goal goal)

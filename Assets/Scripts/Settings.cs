@@ -1,17 +1,15 @@
 ﻿using UnityEngine;
-using System.Collections;
 
 public class Settings : MonoBehaviour
 {
-    // Use this for initialization
-    public static bool DebugState = false;
+    public static bool DebugState;
 
     public static Settings Instance;
 
-    public int Width;
-    public int Height;
+    public int Width = 60;
+    public int Height = 36;
 
-    public int TankSpawnDelay;
+    public int TankSpawnDelay = 20;
 
     void Awake()
     {

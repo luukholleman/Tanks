@@ -1,13 +1,11 @@
-﻿using System;
-using UnityEngine;
-using System.Collections;
-using Assets.Scripts;
+﻿using Assets.Scripts;
 using Assets.Scripts.Tank;
+using UnityEngine;
 
 public class Flag : MonoBehaviour
 {
 
-    public float Score = 0;
+    public float Score;
 
     public readonly float MaxScore = 10;
 

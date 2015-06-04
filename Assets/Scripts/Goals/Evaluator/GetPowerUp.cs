@@ -9,13 +9,6 @@ namespace Assets.Scripts.Goals.Evaluator
     {
         private GameObject _powerUp; // we need to store the powerUp for which we calculated the score for
 
-
-
-        public GetPowerUp()
-        {
-
-        }
-
         public override float CalculateDesirability()
         {
             float score = float.MinValue;
@@ -60,31 +53,6 @@ namespace Assets.Scripts.Goals.Evaluator
             float crisp = module.Defuzzify("Desirability");
             
             return crisp;
-
-
-            //float score = 0;
-
-            //Transform closest = null;
-            //float dist = float.MaxValue;
-
-            //foreach (Transform tank in GameObject.Find("Tanks").transform)
-            //{
-            //    float newDist = Vector2.Distance(powerUp.transform.position, tank.position);
-
-            //    if (newDist < dist)
-            //    {
-            //        dist = newDist;
-            //        closest = tank;
-            //    }
-            //}
-
-            //// if we're the closest, get it
-            //if (closest == Instance.transform)
-            //{
-            //    score = 100;
-            //}
-
-            //return score;
         }
 
         public override Goal GetGoal()

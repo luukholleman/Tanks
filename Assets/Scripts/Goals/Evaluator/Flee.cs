@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Assets.Scripts.Goals.Fuzzy;
+﻿using Assets.Scripts.Goals.Fuzzy;
 using Assets.Scripts.Goals.Fuzzy.Operator;
 using Assets.Scripts.Goals.Fuzzy.Set;
 using UnityEngine;
@@ -34,7 +30,7 @@ namespace Assets.Scripts.Goals.Evaluator
 
         public float CalculateDesirabilityForTank(GameObject tank)
         {
-            if (tank.GetComponent<global::Assets.Scripts.Tank.Tank>().Side == Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Side)
+            if (tank.GetComponent<Tank.Tank>().Side == Instance.GetComponent<Tank.Tank>().Side)
                 return 0;
 
             Module module = new Module();
@@ -59,8 +55,8 @@ namespace Assets.Scripts.Goals.Evaluator
             Set undesirable = desirability.Add("Undesirable", new LeftShoulder(0, 0, 100));
 
             float dist = Vector2.Distance(Instance.transform.position, tank.transform.position);
-            float myHealth = Instance.GetComponent<global::Assets.Scripts.Tank.Tank>().Health;
-            float tarHealth = tank.GetComponent<global::Assets.Scripts.Tank.Tank>().Health;
+            float myHealth = Instance.GetComponent<Tank.Tank>().Health;
+            float tarHealth = tank.GetComponent<Tank.Tank>().Health;
 
             module["DistToTarget"].Fuzzify(dist);
             module["CurrentHealth"].Fuzzify(myHealth);

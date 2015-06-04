@@ -9,9 +9,9 @@ namespace Assets.Scripts.Goals
     {
         private Vector2 _target;
 
-        private Pathfinding.AStar _aStar;
+        private AStar _aStar;
 
-        private bool draw = false;
+        private bool draw;
 
         private List<GameObject> lines = new List<GameObject>(); 
 
@@ -35,8 +35,8 @@ namespace Assets.Scripts.Goals
             {
                 _aStar.Search();
 
-                Status = STATUS.ACTIVE;
-                return STATUS.ACTIVE;
+                Status = STATUS.Active;
+                return STATUS.Active;
             }
 
             if (!_pathSetup && _aStar.Path.Any())
@@ -51,7 +51,7 @@ namespace Assets.Scripts.Goals
 
             if (_pathSetup && !SubGoals.Any())
             {
-                return SetStatus(STATUS.COMPLETED);
+                return SetStatus(STATUS.Completed);
             }
 
             return ProcessSubGoals();
@@ -98,11 +98,6 @@ namespace Assets.Scripts.Goals
             {
                 GameObject.Destroy(gameObject);
             }
-        }
-
-        public override bool HandleMessage()
-        {
-            return true;
         }
 
     }

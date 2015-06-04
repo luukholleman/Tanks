@@ -6,20 +6,14 @@ namespace Assets.Scripts.Tank
     [RequireComponent(typeof(BoxCollider2D))]
     public class Tank : MonoBehaviour
     {
-        public float MaxSpeed;
+        public float MaxSpeed = 4;
 
-        public float ReloadSpeed;
+        public float ReloadSpeed = 1;
 
         public float Health = 100;
 
         public Player.Side Side;
-
-        public static int num = 1;
-
-        private Vector3[] _directions = new Vector3[num];
-
-        private int _key;
-
+        
         void Start()
         {
             name = new Namer().Name;
@@ -64,21 +58,9 @@ namespace Assets.Scripts.Tank
 
         void LateUpdate()
         {
-            Vector3 moveDirection = (Vector3)GetComponent<Rigidbody2D>().velocity;
+            Vector3 moveDirection = GetComponent<Rigidbody2D>().velocity;
 
-            _directions[_key++] = moveDirection;
-
-            if (_key == num)
-                _key = 0;
-
-            float angle = 0;
-
-            foreach (Vector3 direction in _directions)
-            {
-                angle += Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
-            }
-
-            angle /= num;
+            float angle = Mathf.Atan2(moveDirection.y, moveDirection.x) * Mathf.Rad2Deg;
 
             angle -= 90;
 

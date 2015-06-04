@@ -6,7 +6,7 @@ namespace Assets.Scripts
     {
         public Player.Side Side;
 
-        public int TankCount;
+        public int TankCount = 15;
 
         // Use this for initialization
         void Start()
@@ -19,7 +19,6 @@ namespace Assets.Scripts
                 newTank.transform.parent = GameObject.Find("Tanks").transform;
 
                 newTank.GetComponent<Tank.Tank>().Side = Side;
-
             }
         }
     }

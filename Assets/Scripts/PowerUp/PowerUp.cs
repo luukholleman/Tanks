@@ -1,11 +1,9 @@
 ﻿using System;
-using UnityEngine;
-using System.Collections;
 using Assets.Scripts.Tank;
+using UnityEngine;
 
 public class PowerUp : MonoBehaviour
 {
-
     public float ReloadSpeed;
 
     public float MovementSpeed;
@@ -13,13 +11,7 @@ public class PowerUp : MonoBehaviour
     public float Repair;
 
     public bool NewTank;
-
-
-	// Use this for initialization
-	void Start () {
-	
-	}
-
+    
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.CompareTag("Tank"))

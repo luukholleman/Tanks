@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Assets.Scripts.StateMachines.Messaging;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Assets.Scripts.StateMachines
 
         void Start()
         {
-            _currentState = System.Reflection.Assembly.GetExecutingAssembly().CreateInstance(typeof(StateMachine).Namespace + "." + StartingState) as IState;
+            _currentState = Assembly.GetExecutingAssembly().CreateInstance(typeof(StateMachine).Namespace + "." + StartingState) as IState;
 
             _currentState.SetGameObject(gameObject);
         }

@@ -4,7 +4,7 @@ namespace Assets.Scripts.Tank
 {
     public class Rocket : MonoBehaviour {
 
-        private bool _exploded = false;
+        private bool _exploded;
 
         public Player.Side Side;
 
@@ -12,15 +12,13 @@ namespace Assets.Scripts.Tank
 
         void Start()
         {
-            Destroy(gameObject, 10f);
+            Destroy(gameObject, 10f); // lifetime of 10 seconds
         }
 
-        // Update is called once per frame
         void Update () {
-            //if (_exploded && !GetComponent<AudioSource>().isPlaying)
             if (_exploded)
             {
-                GetComponent<SpriteRenderer>().enabled = false;
+                GetComponent<SpriteRenderer>().enabled = false; // dont show after explosion
             }
         }
 
@@ -28,20 +26,15 @@ namespace Assets.Scripts.Tank
         {
             if (!_exploded)
             {
-                if (collider.gameObject.CompareTag("Tank") && collider.gameObject.GetComponent<global::Assets.Scripts.Tank.Tank>().Side != Side)
+                if (collider.gameObject.CompareTag("Tank") && collider.gameObject.GetComponent<Tank>().Side != Side)
                 {
-                    //GetComponent<AudioSource>().Play();
                     GameObject explosion = Instantiate(Resources.Load<GameObject>("PreFabs/Explosion"), transform.position, new Quaternion()) as GameObject;
 
                     explosion.GetComponent<Explosion>().Side = Side;
 
                     _exploded = true;
 
-                    collider.GetComponent<global::Assets.Scripts.Tank.Tank>().Health -= Damage;
-
-                    //Vector2 force = transform.InverseTransformPoint(collider.transform.position);
-
-                    //collider.GetComponent<Rigidbody2D>().AddForceAtPosition(-force * 500, transform.position);
+                    collider.GetComponent<Tank>().Health -= Damage;
                 }
             }
         }

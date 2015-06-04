@@ -1,6 +1,4 @@
-﻿using Assets.Scripts.Goals.Fuzzy.Operator;
-
-namespace Assets.Scripts.Goals.Fuzzy.Set
+﻿namespace Assets.Scripts.Goals.Fuzzy.Set
 {
     public class LeftShoulder : Set
     {
