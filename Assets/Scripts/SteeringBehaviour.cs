@@ -5,30 +5,30 @@ using Random = UnityEngine.Random;
 
 namespace Assets.Scripts
 {
-    class SteeringBehaviour : ScriptableObject
+    class SteeringBehaviour
     {
         public enum Deceleration
         {
-            slow = 3,
-            normal = 2,
-            fast = 1
+            Slow = 3,
+            Normal = 2,
+            Fast = 1
         };
 
         public static float MinBoxLength = 2f;
 
         public GameObject Instance;
 
-        private Rigidbody2D rigidbody;
+        private readonly Rigidbody2D _rigidbody;
 
-        private Tank.Tank _tank;
+        private readonly Tank.Tank _tank;
 
-        private Vector2 wanderTarget = new Vector2(0, 0);
+        private Vector2 _wanderTarget = new Vector2(0, 0);
 
-        public void SetGameObject(GameObject instance)
+        public SteeringBehaviour(GameObject instance)
         {
             Instance = instance;
 
-            rigidbody = Instance.GetComponent<Rigidbody2D>();
+            _rigidbody = Instance.GetComponent<Rigidbody2D>();
 
             _tank = Instance.GetComponent<Tank.Tank>();
         }
@@ -38,15 +38,15 @@ namespace Assets.Scripts
             Vector2 desiredVelocity = (targetPos - (Vector2)Instance.transform.position).normalized *
                                       _tank.MaxSpeed;
 
-            return (desiredVelocity - rigidbody.velocity);
+            return (desiredVelocity - _rigidbody.velocity);
         }
 
-        public Vector2 Flee(Vector2 targetPos)
+        public Vector2 Flee(Vector2 toEvade)
         {
-            Vector2 desiredVelocity = ((Vector2)Instance.transform.position - targetPos).normalized *
+            Vector2 desiredVelocity = ((Vector2)Instance.transform.position - toEvade).normalized *
                                       _tank.MaxSpeed;
 
-            return desiredVelocity - rigidbody.velocity;
+            return desiredVelocity - _rigidbody.velocity;
         }
 
         public Vector2 Arrive(Vector2 targetPos, Deceleration deceleration)
@@ -65,7 +65,7 @@ namespace Assets.Scripts
 
                 Vector2 desiredVelocity = toTarget * speed / distance;
 
-                return desiredVelocity - rigidbody.velocity;
+                return desiredVelocity - _rigidbody.velocity;
             }
 
             return Vector2.zero;
@@ -79,24 +79,24 @@ namespace Assets.Scripts
 
             const float wanderJitter = 0.5f;
 
-            wanderTarget += new Vector2((Random.value * 2f - 1) * wanderJitter, (Random.value * 2f - 1) * wanderJitter);
+            _wanderTarget += new Vector2((Random.value * 2f - 1) * wanderJitter, (Random.value * 2f - 1) * wanderJitter);
 
-            wanderTarget.Normalize();
+            _wanderTarget.Normalize();
 
-            wanderTarget *= wanderRadius;
+            _wanderTarget *= wanderRadius;
 
-            Vector2 targetLocal = wanderTarget + new Vector2(0, wanderDistance);
+            Vector2 targetLocal = _wanderTarget + new Vector2(0, wanderDistance);
 
             Vector2 targetWorld = Instance.transform.TransformPoint(targetLocal);
             
             return Seek(targetWorld);
         }
 
-        public Vector2[] CollisionArea(GameObject instance)
+        public Vector2[] CollisionArea()
         {
-            float mag = instance.GetComponent<Rigidbody2D>().velocity.magnitude;
+            float mag = _rigidbody.velocity.magnitude;
 
-            float maxSpeed = instance.GetComponent<Tank.Tank>().MaxSpeed;
+            float maxSpeed = _tank.MaxSpeed;
 
             float y = MinBoxLength +
                       (mag / maxSpeed) *
@@ -104,8 +104,8 @@ namespace Assets.Scripts
             
             Vector2[] vectors = new Vector2[2];
 
-            vectors[0] = instance.transform.TransformPoint(new Vector2(-0.8f, -0.4f));
-            vectors[1] = instance.transform.TransformPoint(new Vector2(0.8f, y));
+            vectors[0] = Instance.transform.TransformPoint(new Vector2(-0.8f, -0.4f));
+            vectors[1] = Instance.transform.TransformPoint(new Vector2(0.8f, y));
 
             return vectors;
         }
@@ -251,9 +251,9 @@ namespace Assets.Scripts
             return SteeringForce.normalized * _tank.MaxSpeed / 3;
         }
 
-        public Vector2 Stop(Vector2 velocity, float timeToStop)
+        public Vector2 Stop(float stopForce)
         {
-            return velocity * -1 / timeToStop;
+            return _rigidbody.velocity * -1 / stopForce;
         }
 
         public Vector2 Pursuit(Vector2 evaderPos, Vector2 evaderVelocity)
@@ -262,9 +262,9 @@ namespace Assets.Scripts
             //for the evader's current position.
             Vector2 ToEvader = evaderPos - (Vector2)Instance.transform.position;
 
-            double RelativeHeading = Vector2.Dot(rigidbody.velocity.normalized, evaderVelocity.normalized);
+            double RelativeHeading = Vector2.Dot(_rigidbody.velocity.normalized, evaderVelocity.normalized);
 
-            if ((Vector2.Dot(evaderVelocity.normalized, rigidbody.velocity.normalized) > 0) && (RelativeHeading < -0.95))
+            if ((Vector2.Dot(evaderVelocity.normalized, _rigidbody.velocity.normalized) > 0) && (RelativeHeading < -0.95))
             {
                 return Seek(evaderPos);
             }
@@ -280,22 +280,17 @@ namespace Assets.Scripts
             return Seek(evaderPos + evaderVelocity * LookAheadTime);
         }
 
-        public Vector2 Orbit(GameObject center, float radius)
+        public Vector2 Orbit(Vector2 center)
         {
-            //Instance.transform.RotateAround(center.transform.position, 20);
-            Vector2 force = Vector2.zero;
+            // if you set your velocity towards the center at the same speed as you're moving forward, you'll move in circles
 
-            Vector2 local = Instance.transform.InverseTransformPoint(center.transform.position);
+            Vector2 local = Instance.transform.InverseTransformPoint(center);
 
-            Vector2 localVelocity = Instance.transform.InverseTransformVector(rigidbody.velocity);
+            Vector2 localVelocity = Instance.transform.InverseTransformVector(_rigidbody.velocity);
 
-            force.x = localVelocity.y * local.normalized.x;
+            Vector2 localForce = new Vector2(localVelocity.y * local.normalized.x, 0);
 
-            force = Instance.transform.TransformVector(force);
-
-            force = force.normalized * _tank.MaxSpeed * 5;
-
-            return force;
+            return Instance.transform.TransformVector(localForce).normalized * _tank.MaxSpeed;
         }
     }
 }

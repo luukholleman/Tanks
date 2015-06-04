@@ -19,9 +19,7 @@ namespace Assets.Scripts.Goals
 
         public override void Activate()
         {
-            _steeringBehaviour = ScriptableObject.CreateInstance<SteeringBehaviour>();
-
-            _steeringBehaviour.SetGameObject(Instance);
+            _steeringBehaviour = new SteeringBehaviour(Instance);
 
             _rigidbody = Instance.GetComponent<Rigidbody2D>();
 

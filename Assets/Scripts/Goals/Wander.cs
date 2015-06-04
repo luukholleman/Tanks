@@ -8,9 +8,7 @@ namespace Assets.Scripts.Goals
 
         public override void Activate()
         {
-            _steeringBehaviour = SteeringBehaviour.CreateInstance<SteeringBehaviour>();
-
-            _steeringBehaviour.SetGameObject(Instance);
+            _steeringBehaviour = new SteeringBehaviour(Instance);
         }
 
         public override STATUS Process()

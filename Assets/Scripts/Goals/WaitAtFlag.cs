@@ -26,9 +26,7 @@ namespace Assets.Scripts.Goals
             Messenger.BroadcastMessage(new Message(Instance, Message.MessageType.ChatMessage, msg));
             Messenger.Dispatch();
 
-            _steeringBehaviour = SteeringBehaviour.CreateInstance<SteeringBehaviour>();
-
-            _steeringBehaviour.SetGameObject(Instance);
+            _steeringBehaviour = new SteeringBehaviour(Instance);
 
             _rigidbody = Instance.GetComponent<Rigidbody2D>();
         }

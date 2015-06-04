@@ -8,9 +8,7 @@ namespace Assets.Scripts.Pathfinding
     public class GraphNode
     {
         public int Index;
-
-        public int costs;
-
+        
         public readonly Vector2 Position;
 
         public List<GraphEdge> Edges = new List<GraphEdge>(); 

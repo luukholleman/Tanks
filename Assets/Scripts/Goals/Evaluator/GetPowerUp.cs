@@ -41,26 +41,24 @@ namespace Assets.Scripts.Goals.Evaluator
 
             Variable distToTarget = module.CreateFLV("DistToPowerup");
 
-            Set close = distToTarget.Add("Powerup_Close", new LeftShoulder(0, 200, 200));
+            Set close = distToTarget.Add("Powerup_Close", new LeftShoulder(0, 0, 200));
             Set far = distToTarget.Add("Powerup_Far", new RightShoulder(0, 200, 200));
 
             Variable desirability = module.CreateFLV("Desirability");
-            Set desirable = desirability.Add("Desirable", new RightShoulder(0, 95, 95));
-            Set undesirable = desirability.Add("Undesirable", new LeftShoulder(0, 0, 95));
+            Set undesirable = desirability.Add("Undesirable", new LeftShoulder(0, 0, 80));
+            Set desirable = desirability.Add("Desirable", new RightShoulder(0, 80, 100));
 
             float dist = Vector2.Distance(Instance.transform.position, powerUp.transform.position);
-
+            
             module["DistToPowerup"].Fuzzify(dist);
 
             // close && enemies seems like a dumb move and it actually is, but tanks cant know how much enemies there are
-            module.Add(close, desirable.Very());
+            module.Add(close, desirable);
 
             module.Add(far, undesirable);
 
             float crisp = module.Defuzzify("Desirability");
-
-            //Debug.Log(dist + ", " + ratio + ", " + crisp);
-
+            
             return crisp;
 
 

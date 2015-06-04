@@ -76,6 +76,7 @@ namespace Assets.Scripts.Goals
         {
             foreach (Goal subGoal in SubGoals)
             {
+                subGoal.RemoveAllSubGoals();
                 subGoal.Terminate();
             }
 

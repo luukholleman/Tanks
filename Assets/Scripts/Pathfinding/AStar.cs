@@ -22,7 +22,7 @@ namespace Assets.Scripts.Pathfinding
         public List<int> Closed = new List<int>();
         //PriorityQueue<int> Open = new PriorityQueue<int>();
 
-        PriorityQueue Open = new PriorityQueue();
+        readonly PriorityQueue Open = new PriorityQueue();
 
         int _iterationCount;
 
@@ -108,7 +108,7 @@ namespace Assets.Scripts.Pathfinding
                         float distance = Vector2.Distance(_graph.GetNode(_target).Position, _graph.GetNode(smallest).Position);
                         
                         // enqueue neighbour
-                        Open.Enqueue(neighbor.To, (int)(neighbourCost + distance));
+                        Open.Enqueue(neighbor.To, (int)(neighbourCost + distance + Random.value / 2));
                     }
 
                     // we've checked this node, never check it again

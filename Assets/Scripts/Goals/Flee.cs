@@ -30,9 +30,7 @@ namespace Assets.Scripts.Goals
 
             Instance.GetComponentInChildren<ChatBubble>().Text = "IMMA OUTTA HERE";
 
-            _steeringBehaviour = ScriptableObject.CreateInstance<SteeringBehaviour>();
-
-            _steeringBehaviour.SetGameObject(Instance);
+            _steeringBehaviour = new SteeringBehaviour(Instance);
 
             _rigidbody = Instance.GetComponent<Rigidbody2D>();
 

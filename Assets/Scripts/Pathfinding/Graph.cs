@@ -10,11 +10,11 @@ namespace Assets.Scripts.Pathfinding
     {
         public static Graph Instance;
 
-        public float NodeDistance = 1f;
+        public float NodeSpacing = 1f;
 
         public bool Diagonal = true;
 
-        public List<Vector2> _closed = new List<Vector2>(); 
+        private List<Vector2> _closed = new List<Vector2>(); 
 
         void Start()
         {
@@ -27,11 +27,11 @@ namespace Assets.Scripts.Pathfinding
 
         void BruteForceFill()
         {
-            for (float x = Settings.Instance.Width * -1; x <= Settings.Instance.Width; x += NodeDistance)
+            for (float x = Settings.Instance.Width * -1; x <= Settings.Instance.Width; x += NodeSpacing)
             {
-                for (float y = Settings.Instance.Height * -1; y <= Settings.Instance.Height; y += NodeDistance)
+                for (float y = Settings.Instance.Height * -1; y <= Settings.Instance.Height; y += NodeSpacing)
                 {
-                    Collider2D collider = Physics2D.OverlapArea(new Vector2(x - NodeDistance / 2, y - NodeDistance / 2), new Vector2(x + NodeDistance / 2, y + NodeDistance / 2), LayerMask.GetMask("Wall", "Obstacle", "Tree"));
+                    Collider2D collider = Physics2D.OverlapArea(new Vector2(x - NodeSpacing / 2, y - NodeSpacing / 2), new Vector2(x + NodeSpacing / 2, y + NodeSpacing / 2), LayerMask.GetMask("Wall", "Obstacle", "Tree"));
 
                     // er staat hier niks
                     if (collider == null)
@@ -43,14 +43,14 @@ namespace Assets.Scripts.Pathfinding
                         List<GraphNode> neighbours = new List<GraphNode>();
 
                         //top and left
-                        neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(0, -NodeDistance)));
-                        neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeDistance, 0)));
+                        neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(0, -NodeSpacing)));
+                        neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeSpacing, 0)));
 
                         if (Diagonal)
                         {
                             // top left, bottom left
-                            neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeDistance, NodeDistance)));
-                            neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeDistance, -NodeDistance)));
+                            neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeSpacing, NodeSpacing)));
+                            neighbours.Add(nodes.FirstOrDefault(n => n.Position == node.Position + new Vector2(-NodeSpacing, -NodeSpacing)));
                         }
 
                         foreach (GraphNode neighbour in neighbours.Where(n => n != null))
@@ -60,7 +60,7 @@ namespace Assets.Scripts.Pathfinding
                                 neighbour.Edges.Add(new GraphEdge(node.Index, Vector2.Distance(node.Position, neighbour.Position)));
                             }
 
-                            node.Edges.Add(new GraphEdge(neighbour.Index, NodeDistance));
+                            node.Edges.Add(new GraphEdge(neighbour.Index, NodeSpacing));
                         }
                     }
                 }
@@ -71,7 +71,7 @@ namespace Assets.Scripts.Pathfinding
         {
             _closed.Add(position);
 
-            Collider2D collider = Physics2D.OverlapArea(new Vector2(position.x - NodeDistance / 2, position.y - NodeDistance / 2), new Vector2(position.x + NodeDistance / 2, position.y + NodeDistance / 2), LayerMask.GetMask("Wall", "Obstacle", "Tree"));
+            Collider2D collider = Physics2D.OverlapArea(new Vector2(position.x - NodeSpacing / 2, position.y - NodeSpacing / 2), new Vector2(position.x + NodeSpacing / 2, position.y + NodeSpacing / 2), LayerMask.GetMask("Wall", "Obstacle", "Tree"));
 
             // er staat hier niks
             if (collider == null)

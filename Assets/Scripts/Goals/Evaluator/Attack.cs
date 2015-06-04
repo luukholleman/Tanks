@@ -51,8 +51,8 @@ namespace Assets.Scripts.Goals.Evaluator
             Set tarHighHealth = targetHealth.Add("Health_High", new RightShoulder(50, 75, 150));
 
             Variable desirability = module.CreateFLV("Desirability");
-            Set desirable = desirability.Add("Desirable", new RightShoulder(0, 100, 100));
             Set undesirable = desirability.Add("Undesirable", new LeftShoulder(0, 0, 100));
+            Set desirable = desirability.Add("Desirable", new RightShoulder(0, 100, 100));
 
             float dist = Vector2.Distance(Instance.transform.position, tank.transform.position);
             float myHealth = Instance.GetComponent<Tank.Tank>().Health;

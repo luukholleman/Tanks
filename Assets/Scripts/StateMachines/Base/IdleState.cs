@@ -21,10 +21,10 @@ namespace Assets.Scripts.StateMachines.Base
 
                 GameObject closestFlag = FindClosestFlag(pair.Value);
 
-                GameObject newTank = GameObject.Instantiate(tank, closestFlag.transform.position + new Vector3(Random.value, Random.value, 0).normalized, new Quaternion()) as GameObject;
+                GameObject newTank = GameObject.Instantiate(tank, closestFlag.transform.position + new Vector3(Random.value * 10 - 5, Random.value * 10 - 5, 0).normalized, new Quaternion()) as GameObject;
                 
                 newTank.transform.parent = GameObject.Find("Tanks").transform;
-                newTank.GetComponent<global::Assets.Scripts.Tank.Tank>().Side = instance.GetComponent<Spawn>().Side;
+                newTank.GetComponent<Tank.Tank>().Side = instance.GetComponent<Spawn>().Side;
 
                 toRemove.Add(pair.Key);
             }
@@ -56,8 +56,25 @@ namespace Assets.Scripts.StateMachines.Base
                 float newDist = Vector3.Distance(pos, transform.position);
                 if (newDist < dist && transform.GetComponent<Flag>().Side == Instance.GetComponent<Spawn>().Side)
                 {
-                    closest = transform.gameObject;
-                    dist = newDist;
+                    bool foundEnemy = false;
+
+                    Collider2D[] tanks = Physics2D.OverlapCircleAll(transform.position,
+                        transform.GetComponent<Flag>().CappingRange, LayerMask.GetMask("Tank"));
+
+                    foreach (Collider2D tank in tanks)
+                    {
+                        if (tank.GetComponent<Tank.Tank>().Side != Instance.GetComponent<Spawn>().Side)
+                        {
+                            foundEnemy = true;
+                            break;
+                        }
+                    }
+
+                    if (!foundEnemy)
+                    {
+                        closest = transform.gameObject;
+                        dist = newDist;
+                    }
                 }
             }
 
@@ -82,7 +99,7 @@ namespace Assets.Scripts.StateMachines.Base
         {
             if (msg.Msg == Message.MessageType.TankDied)
             {
-                if (msg.Sender.GetComponent<global::Assets.Scripts.Tank.Tank>().Side == instance.GetComponent<Spawn>().Side)
+                if (msg.Sender.GetComponent<Tank.Tank>().Side == instance.GetComponent<Spawn>().Side)
                 {
                     int i = 0;
                     while (true)

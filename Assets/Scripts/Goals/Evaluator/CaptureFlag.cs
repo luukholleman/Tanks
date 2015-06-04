@@ -37,7 +37,7 @@ namespace Assets.Scripts.Goals.Evaluator
 
             Variable distToTarget = module.CreateFLV("DistToFlag");
 
-            Set close = distToTarget.Add("Flag_Close", new LeftShoulder(0, 200, 200));
+            Set close = distToTarget.Add("Flag_Close", new LeftShoulder(0, 0, 200));
             Set far = distToTarget.Add("Flag_Far", new RightShoulder(0, 200, 200));
 
             Variable enemyAllyRatio = module.CreateFLV("AllyCount");

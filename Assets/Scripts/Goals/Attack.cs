@@ -30,8 +30,7 @@ namespace Assets.Scripts.Goals
 
             Instance.GetComponentInChildren<ChatBubble>().Text = "Attacking " + Target.name;
 
-            _steeringBehaviour = ScriptableObject.CreateInstance<SteeringBehaviour>();
-            _steeringBehaviour.SetGameObject(Instance);
+            _steeringBehaviour = new SteeringBehaviour(Instance);
 
             _rigidbody = Instance.GetComponent<Rigidbody2D>();
 
@@ -46,7 +45,7 @@ namespace Assets.Scripts.Goals
 
             if (Vector2.Distance(Instance.transform.position, Target.transform.position) < 2f)
             {
-                steeringForce += _steeringBehaviour.Stop(_rigidbody.velocity, 0.2f);
+                steeringForce += _steeringBehaviour.Stop(0.2f);
             }
             else
             {
