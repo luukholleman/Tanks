@@ -15,7 +15,7 @@ namespace Assets.Scripts.Tank
             {
                 var point = Camera.main.WorldToScreenPoint(transform.position + new Vector3(0, 2, 0));
 
-                GUI.Label(new Rect(point.x - 100, Screen.currentResolution.height - point.y, 200, 200), transform.parent.name + "\n" + Text, Style);
+                GUI.Label(new Rect(point.x - 100, Screen.currentResolution.height - point.y, 200, 200), transform.name + "\n" + Text, Style);
             }
         }
     }
