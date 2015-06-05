@@ -38,8 +38,8 @@ namespace Assets.Scripts.Goals.Evaluator
             Set far = distToTarget.Add("Powerup_Far", new RightShoulder(0, 200, 200));
 
             Variable desirability = module.CreateFLV("Desirability");
-            Set undesirable = desirability.Add("Undesirable", new LeftShoulder(0, 0, 80));
-            Set desirable = desirability.Add("Desirable", new RightShoulder(0, 80, 100));
+            Set undesirable = desirability.Add("Undesirable", new LeftShoulder(0, 0, 95));
+            Set desirable = desirability.Add("Desirable", new RightShoulder(0, 95, 95));
 
             float dist = Vector2.Distance(Instance.transform.position, powerUp.transform.position);
             
